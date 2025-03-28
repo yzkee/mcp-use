@@ -1,7 +1,7 @@
 """
 Basic usage example for the Model-Agnostic MCP Library for LLMs.
 
-This example demonstrates how to use the pymcp library to connect
+This example demonstrates how to use the mcpeer library to connect
 any LLM to MCP tools through a unified interface.
 """
 
