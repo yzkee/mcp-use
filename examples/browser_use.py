@@ -10,12 +10,8 @@ import asyncio
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 
-from pymcp import MCPAgent
-from pymcp.connectors.stdio import StdioConnector
-
-# import os
-
-# os.environ["DISPLAY"] = ":0"  # Or whatever your display number is
+from mcpeer import MCPAgent
+from mcpeer.connectors.stdio import StdioConnector
 
 
 async def run():

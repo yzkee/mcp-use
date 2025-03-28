@@ -16,7 +16,7 @@ from langchain_core.tools import BaseTool as CoreBaseTool
 from langchain_core.tools import ToolException
 from pydantic import BaseModel
 
-from pymcp.types import TextContent
+from mcpeer.types import TextContent
 
 from ..connectors.base import BaseConnector
 
@@ -116,7 +116,9 @@ class LangChainAgent:
                         result = await self.connector.call_tool(self.name, kwargs)
 
                         if hasattr(result, "isError") and result.isError:
-                            raise ToolException(f"Tool execution failed: {result.content}")
+                            raise ToolException(
+                                f"Tool execution failed: {result.content}"
+                            )
 
                         if not hasattr(result, "content"):
                             return str(result)
@@ -141,7 +143,8 @@ class LangChainAgent:
                         # If no text content, return a clear message
                         # describing the situation.
                         result_content_text = (
-                            result_content_text or "No text content available in response"
+                            result_content_text
+                            or "No text content available in response"
                         )
 
                         return result_content_text
@@ -216,6 +219,8 @@ class LangChainAgent:
             chat_history = []
 
         # Invoke with all required variables
-        result = await self.agent.ainvoke({"input": query, "chat_history": chat_history})
+        result = await self.agent.ainvoke(
+            {"input": query, "chat_history": chat_history}
+        )
 
         return result["output"]

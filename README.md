@@ -42,14 +42,14 @@ Ready-to-use agent implementations:
 ## Installation
 
 ```bash
-pip install pymcp
+pip install mcpeer
 ```
 
 Or install from source:
 
 ```bash
-git clone https://github.com/pietrozullo/pymcp.git
-cd pymcp
+git clone https://github.com/pietrozullo/mcpeer.git
+cd mcpeer
 pip install -e .
 ```
 
@@ -60,7 +60,7 @@ Here's a simple example to get you started:
 ```python
 import asyncio
 from mcp import StdioServerParameters
-from pymcp import MCPAgent
+from mcpeer import MCPAgent
 
 async def main():
     # Create server parameters for stdio connection
@@ -102,8 +102,8 @@ You can also use the simplified interface that handles connector lifecycle manag
 ```python
 import asyncio
 from langchain_openai import ChatOpenAI
-from pymcp import MCPAgent
-from pymcp.connectors.stdio import StdioConnector
+from mcpeer import MCPAgent
+from mcpeer.connectors.stdio import StdioConnector
 
 async def main():
     # Create the connector

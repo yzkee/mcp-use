@@ -1,7 +1,7 @@
 """
-Type definitions for the pymcp package.
+Type definitions for the mcpeer package.
 
-This module provides type definitions used throughout the pymcp package.
+This module provides type definitions used throughout the mcpeer package.
 """
 
 from typing import Any

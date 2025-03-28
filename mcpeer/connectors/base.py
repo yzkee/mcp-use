@@ -8,7 +8,7 @@ must implement.
 from abc import ABC, abstractmethod
 from typing import Any
 
-from pymcp.types import Tool
+from mcpeer.types import Tool
 
 
 class BaseConnector(ABC):

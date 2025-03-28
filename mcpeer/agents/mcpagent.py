@@ -7,7 +7,7 @@ to provide a simple interface for using MCP tools with different LLMs.
 
 from langchain.schema.language_model import BaseLanguageModel
 
-from pymcp.connectors.base import BaseConnector
+from mcpeer.connectors.base import BaseConnector
 
 from .langchain_agent import LangChainAgent
 
