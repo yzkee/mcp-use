@@ -131,17 +131,103 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+## Configuration File Support
+
+mcpeer supports initialization from configuration files, making it easy to manage and switch between different MCP server setups:
+
+```python
+import asyncio
+from mcpeer import create_session_from_config
+
+async def main():
+    # Create an MCP session from a config file
+    session = create_session_from_config("mcp-config.json")
+
+    # Initialize the session
+    await session.initialize()
+
+    # Use the session...
+
+    # Disconnect when done
+    await session.disconnect()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+Example configuration file (`mcp-config.json`):
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest", "headless"],
+      "env": {
+        "PLAYWRIGHT_WS_ENDPOINT": "ws://localhost:41965/"
+      }
+    }
+  }
+}
+```
+
+## MCPClient for Managing Multiple Servers
+
+The `MCPClient` class provides a higher-level abstraction for managing multiple MCP servers from a single client:
+
+```python
+import asyncio
+from langchain_anthropic import ChatAnthropic
+from mcpeer import MCPAgent, MCPClient
+
+async def main():
+    # Create a client from a config file
+    client = MCPClient.from_config_file("mcp-config.json")
+
+    # Or initialize with a config file path
+    # client = MCPClient("mcp-config.json")
+
+    # Or programmatically add servers
+    client.add_server(
+        "local-ws",
+        {
+            "command": "npx",
+            "args": ["@playwright/mcp@latest", "headless"]
+        }
+    )
+
+    # Create an LLM
+    llm = ChatAnthropic(model="claude-3-5-sonnet-20240620")
+
+    # Create an agent using the client
+    agent = MCPAgent(
+        llm=llm,
+        client=client,
+        server_name="playwright",  # Optional, uses first server if not specified
+        max_steps=30
+    )
+
+    # Run a query
+    result = await agent.run("Your query here")
+
+    # Close all sessions
+    await client.close_all_sessions()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+This approach simplifies working with multiple MCP servers and allows for more dynamic configuration management.
+
 ## Advanced Usage
 
 See the `examples` directory for more advanced usage examples:
 
-- `basic_usage.py`: Shows basic usage with different models
-- `simplified_usage.py`: Shows how to use automatic connector lifecycle management
-- `websocket_example.py`: Shows how to connect to a remote MCP over WebSocket
+- `browser_use.py`: Shows how to use MCPClient with configuration files for browser automation
 
 ## Requirements
 
-- Python 3.8+
+- Python 3.11+
 - MCP implementation (like Playwright MCP)
 - LangChain and appropriate model libraries (OpenAI, Anthropic, etc.)
 

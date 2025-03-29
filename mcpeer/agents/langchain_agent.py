@@ -8,17 +8,62 @@ through a unified interface.
 from typing import Any, NoReturn
 
 from jsonschema_pydantic import jsonschema_to_pydantic
-from langchain.agents import AgentExecutor, create_openai_functions_agent
+from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.schema.language_model import BaseLanguageModel
-from langchain.tools import BaseTool
-from langchain_core.tools import BaseTool as CoreBaseTool
-from langchain_core.tools import ToolException
+from langchain_core.tools import BaseTool, ToolException
+from mcp.types import CallToolResult, EmbeddedResource, ImageContent, TextContent
 from pydantic import BaseModel
 
-from mcpeer.types import TextContent
-
 from ..connectors.base import BaseConnector
+from ..logging import logger
+
+
+def _parse_mcp_tool_result(tool_result: CallToolResult) -> str:
+    """Parse the content of a CallToolResult into a string.
+
+    Args:
+        tool_result: The result object from calling an MCP tool.
+
+    Returns:
+        A string representation of the tool result content.
+
+    Raises:
+        ToolException: If the tool execution failed, returned no content,
+                       or contained unexpected content types.
+    """
+    if tool_result.isError:
+        raise ToolException(f"Tool execution failed: {tool_result.content}")
+
+    if not tool_result.content:
+        raise ToolException("Tool execution returned no content")
+
+    decoded_result = ""
+    for item in tool_result.content:
+        match item.type:
+            case "text":
+                item: TextContent
+                decoded_result += item.text
+            case "image":
+                item: ImageContent
+                decoded_result += item.data  # Assuming data is string-like or base64
+            case "resource":
+                resource: EmbeddedResource = item.resource
+                if hasattr(resource, "text"):
+                    decoded_result += resource.text
+                elif hasattr(resource, "blob"):
+                    # Assuming blob needs decoding or specific handling; adjust as needed
+                    decoded_result += (
+                        resource.blob.decode()
+                        if isinstance(resource.blob, bytes)
+                        else str(resource.blob)
+                    )
+                else:
+                    raise ToolException(f"Unexpected resource type: {resource.type}")
+            case _:
+                raise ToolException(f"Unexpected content type: {item.type}")
+
+    return decoded_result
 
 
 class LangChainAgent:
@@ -66,7 +111,7 @@ class LangChainAgent:
                 schema[key] = self.fix_schema(value)  # Apply recursively
         return schema
 
-    async def _create_langchain_tools(self) -> list[CoreBaseTool]:
+    async def _create_langchain_tools(self) -> list[BaseTool]:
         """Create LangChain tools from MCP tools.
 
         Returns:
@@ -76,10 +121,10 @@ class LangChainAgent:
         local_connector = self.connector
 
         # Wrap MCP tools into LangChain tools
-        langchain_tools: list[CoreBaseTool] = []
+        langchain_tools: list[BaseTool] = []
         for tool in tools:
             # Define adapter class to convert MCP tool to LangChain format
-            class McpToLangChainAdapter(CoreBaseTool):
+            class McpToLangChainAdapter(BaseTool):
                 name: str = tool.name or "NO NAME"
                 description: str = tool.description or ""
                 # Convert JSON schema to Pydantic model for argument validation
@@ -110,44 +155,22 @@ class LangChainAgent:
                     Raises:
                         ToolException: If tool execution fails.
                     """
-                    print(f'MCP tool: "{self.name}" received input: {kwargs}')
+                    logger.info(f'MCP tool: "{self.name}" received input: {kwargs}')
 
                     try:
-                        result = await self.connector.call_tool(self.name, kwargs)
-
-                        if hasattr(result, "isError") and result.isError:
-                            raise ToolException(
-                                f"Tool execution failed: {result.content}"
-                            )
-
-                        if not hasattr(result, "content"):
-                            return str(result)
-
-                        try:
-                            result_content_text = "\n\n".join(
-                                item.text
-                                for item in result.content
-                                if isinstance(item, TextContent)
-                            )
-
-                        except KeyError as e:
-                            result_content_text = (
-                                f"Error in parsing result.content: {str(e)}; "
-                                f"contents: {repr(result.content)}"
-                            )
-
-                        # Log rough result size for monitoring
-                        size = len(result_content_text.encode())
-                        print(f'MCP tool "{self.name}" received result (size: {size})')
-
-                        # If no text content, return a clear message
-                        # describing the situation.
-                        result_content_text = (
-                            result_content_text
-                            or "No text content available in response"
+                        tool_result: CallToolResult = await self.connector.call_tool(
+                            self.name, kwargs
                         )
-
-                        return result_content_text
+                        try:
+                            # Use the helper function to parse the result
+                            return _parse_mcp_tool_result(tool_result)
+                        except Exception as e:
+                            # Log the exception for debugging
+                            logger.error(f"Error parsing tool result: {e}")
+                            # Shortened line:
+                            return (
+                                f"Error parsing result: {e!s}; Raw content: {tool_result.content!r}"
+                            )
 
                     except Exception as e:
                         if self.handle_tool_error:
@@ -157,9 +180,7 @@ class LangChainAgent:
             langchain_tools.append(McpToLangChainAdapter())
 
         # Log available tools for debugging
-        for tool in langchain_tools:
-            print(f"- {tool.name}")
-
+        logger.info(f"Available tools: {[tool.name for tool in langchain_tools]}")
         return langchain_tools
 
     def _create_agent(self) -> AgentExecutor:
@@ -179,14 +200,10 @@ class LangChainAgent:
                 MessagesPlaceholder(variable_name="agent_scratchpad"),
             ]
         )
-
-        agent = create_openai_functions_agent(self.llm, self.tools, prompt)
+        agent = create_tool_calling_agent(llm=self.llm, tools=self.tools, prompt=prompt)
+        print(self.tools)
         return AgentExecutor(
-            agent=agent,
-            tools=self.tools,
-            verbose=True,
-            max_iterations=self.max_steps,
-            input_key="input",  # Explicitly set the input key
+            agent=agent, tools=self.tools, max_iterations=self.max_steps, verbose=True
         )
 
     async def run(
@@ -219,8 +236,6 @@ class LangChainAgent:
             chat_history = []
 
         # Invoke with all required variables
-        result = await self.agent.ainvoke(
-            {"input": query, "chat_history": chat_history}
-        )
+        result = await self.agent.ainvoke({"input": query, "chat_history": chat_history})
 
         return result["output"]

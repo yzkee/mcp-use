@@ -97,7 +97,7 @@ class MCPSession:
         Returns:
             The list of available tools in MCP format.
         """
-        self.tools = await self.connector.list_tools()
+        self.tools = self.connector.tools
         return self.tools
 
     def get_tools_for_llm(self) -> list[dict[str, Any]]:

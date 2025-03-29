@@ -7,8 +7,11 @@ to provide a simple interface for using MCP tools with different LLMs.
 
 from langchain.schema.language_model import BaseLanguageModel
 
+from mcpeer.client import MCPClient
 from mcpeer.connectors.base import BaseConnector
+from mcpeer.session import MCPSession
 
+from ..logging import logger
 from .langchain_agent import LangChainAgent
 
 
@@ -21,32 +24,56 @@ class MCPAgent:
 
     def __init__(
         self,
-        connector: BaseConnector,
         llm: BaseLanguageModel,
+        client: MCPClient | None = None,
+        connector: BaseConnector | None = None,
+        server_name: str | None = None,
         max_steps: int = 5,
         auto_initialize: bool = False,
     ):
         """Initialize a new MCPAgent instance.
 
         Args:
-            connector: The MCP connector to use.
             llm: The LangChain LLM to use.
+            client: The MCPClient to use. If provided, connector is ignored.
+            connector: The MCP connector to use if client is not provided.
+            server_name: The name of the server to use if client is provided.
             max_steps: The maximum number of steps to take.
             auto_initialize: Whether to automatically initialize the agent when run is called.
         """
-        self.connector = connector
         self.llm = llm
+        self.client = client
+        self.connector = connector
+        self.server_name = server_name
         self.max_steps = max_steps
         self.auto_initialize = auto_initialize
         self._initialized = False
 
+        # Either client or connector must be provided
+        if not client and not connector:
+            raise ValueError("Either client or connector must be provided")
+
         self._agent: LangChainAgent | None = None
+        self._session: MCPSession | None = None
 
     async def initialize(self) -> None:
         """Initialize the MCP client and agent."""
+        # If using client, get or create a session
+        if self.client:
+            try:
+                self._session = self.client.get_session(self.server_name)
+            except ValueError:
+                self._session = await self.client.create_session(self.server_name)
+            connector_to_use = self._session.connector
+        else:
+            # Using direct connector
+            connector_to_use = self.connector
+            await connector_to_use.connect()
+            await connector_to_use.initialize()
+
         # Create the agent
         self._agent = LangChainAgent(
-            connector=self.connector, llm=self.llm, max_steps=self.max_steps
+            connector=connector_to_use, llm=self.llm, max_steps=self.max_steps
         )
 
         # Initialize the agent
@@ -59,13 +86,20 @@ class MCPAgent:
             if self._agent:
                 # Clean up the agent first
                 self._agent = None
-            if self.connector:
+
+            # If using client with session, close the session through client
+            if self.client and self._session:
+                await self.client.close_session(self.server_name)
+            # If using direct connector, disconnect
+            elif self.connector:
                 await self.connector.disconnect()
+
             self._initialized = False
         except Exception as e:
-            print(f"Warning: Error during client closure: {e}")
+            logger.warning(f"Warning: Error during agent closure: {e}")
             # Still try to clean up even if there was an error
             self._agent = None
+            self._initialized = False
 
     async def run(
         self, query: str, max_steps: int | None = None, manage_connector: bool = True
@@ -86,16 +120,10 @@ class MCPAgent:
         Returns:
             The result of running the query.
         """
-        if manage_connector:
-            # Handle connector lifecycle internally
-            try:
-                # Connect to the connector if not already connected
-                await self.connector.connect()
-
-                # Initialize the connector
-                await self.connector.initialize()
-
-                # Initialize the agent if not already initialized
+        result = ""
+        try:
+            if manage_connector:
+                # Initialize if needed
                 if not self._initialized or not self._agent:
                     await self.initialize()
 
@@ -103,16 +131,19 @@ class MCPAgent:
                 if not self._agent:
                     raise RuntimeError("MCP client failed to initialize")
 
-                return await self._agent.run(query, max_steps)
-            finally:
-                # Make sure to clean up the connection regardless of success/failure
+                result = await self._agent.run(query, max_steps)
+            else:
+                # Caller is managing connector lifecycle
+                if not self._initialized and self.auto_initialize:
+                    await self.initialize()
+
+                if not self._agent:
+                    raise RuntimeError("MCP client is not initialized")
+
+                result = await self._agent.run(query, max_steps)
+
+            return result
+        finally:
+            # Make sure to clean up the connection if we're managing it
+            if manage_connector and not self.client:
                 await self.close()
-        else:
-            # Caller is managing connector lifecycle
-            if not self._initialized and self.auto_initialize:
-                await self.initialize()
-
-            if not self._agent:
-                raise RuntimeError("MCP client is not initialized")
-
-            return await self._agent.run(query, max_steps)

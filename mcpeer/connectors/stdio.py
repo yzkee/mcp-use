@@ -11,6 +11,7 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 from mcp.types import Tool
 
+from ..logging import logger
 from .base import BaseConnector
 
 
@@ -35,7 +36,7 @@ class StdioConnector(BaseConnector):
             env: Optional environment variables.
         """
         self.command = command
-        self.args = args or ["@playwright/mcp@latest"]
+        self.args = args
         self.env = env
         self.client: ClientSession | None = None
         self._stdio_ctx = None
@@ -54,8 +55,12 @@ class StdioConnector(BaseConnector):
         try:
             if self.client:
                 await self.client.__aexit__(None, None, None)
+                self.client = None
             if self._stdio_ctx:
                 await self._stdio_ctx.__aexit__(None, None, None)
+                self._stdio_ctx = None
+        except Exception as e:
+            logger.warning(f"Warning: Error during stdio connector disconnect: {e}")
         finally:
             # Always clean up references even if there were errors
             self.client = None

@@ -8,6 +8,8 @@ must implement.
 from abc import ABC, abstractmethod
 from typing import Any
 
+from mcp.types import CallToolResult
+
 from mcpeer.types import Tool
 
 
@@ -39,7 +41,7 @@ class BaseConnector(ABC):
         pass
 
     @abstractmethod
-    async def call_tool(self, name: str, arguments: dict[str, Any]) -> Any:
+    async def call_tool(self, name: str, arguments: dict[str, Any]) -> CallToolResult:
         """Call an MCP tool with the given arguments."""
         pass
 
