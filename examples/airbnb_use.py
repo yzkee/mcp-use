@@ -11,7 +11,7 @@ import os
 from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
 
-from mcpeer import MCPAgent, MCPClient
+from mcp_use import MCPAgent, MCPClient
 
 
 async def run_airbnb_example():
@@ -20,7 +20,9 @@ async def run_airbnb_example():
     load_dotenv()
 
     # Create MCPClient with Airbnb configuration
-    client = MCPClient.from_config_file(os.path.join(os.path.dirname(__file__), "airbnb_mcp.json"))
+    client = MCPClient.from_config_file(
+        os.path.join(os.path.dirname(__file__), "airbnb_mcp.json")
+    )
     # Create LLM - you can choose between different models
     llm = ChatAnthropic(model="claude-3-5-sonnet-20240620")
     # Alternative models:

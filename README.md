@@ -42,14 +42,14 @@ Ready-to-use agent implementations:
 ## Installation
 
 ```bash
-pip install mcpeer
+pip install mcp_use
 ```
 
 Or install from source:
 
 ```bash
-git clone https://github.com/pietrozullo/mcpeer.git
-cd mcpeer
+git clone https://github.com/pietrozullo/mcp_use.git
+cd mcp_use
 pip install -e .
 ```
 
@@ -60,7 +60,7 @@ Here's a simple example to get you started:
 ```python
 import asyncio
 from mcp import StdioServerParameters
-from mcpeer import MCPAgent
+from mcp_use import MCPAgent
 
 async def main():
     # Create server parameters for stdio connection
@@ -102,8 +102,8 @@ You can also use the simplified interface that handles connector lifecycle manag
 ```python
 import asyncio
 from langchain_openai import ChatOpenAI
-from mcpeer import MCPAgent
-from mcpeer.connectors.stdio import StdioConnector
+from mcp_use import MCPAgent
+from mcp_use.connectors.stdio import StdioConnector
 
 async def main():
     # Create the connector
@@ -133,11 +133,11 @@ if __name__ == "__main__":
 
 ## Configuration File Support
 
-mcpeer supports initialization from configuration files, making it easy to manage and switch between different MCP server setups:
+mcp_use supports initialization from configuration files, making it easy to manage and switch between different MCP server setups:
 
 ```python
 import asyncio
-from mcpeer import create_session_from_config
+from mcp_use import create_session_from_config
 
 async def main():
     # Create an MCP session from a config file
@@ -178,7 +178,7 @@ The `MCPClient` class provides a higher-level abstraction for managing multiple 
 ```python
 import asyncio
 from langchain_anthropic import ChatAnthropic
-from mcpeer import MCPAgent, MCPClient
+from mcp_use import MCPAgent, MCPClient
 
 async def main():
     # Create a client from a config file

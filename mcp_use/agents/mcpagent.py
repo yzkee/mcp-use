@@ -7,9 +7,9 @@ to provide a simple interface for using MCP tools with different LLMs.
 
 from langchain.schema.language_model import BaseLanguageModel
 
-from mcpeer.client import MCPClient
-from mcpeer.connectors.base import BaseConnector
-from mcpeer.session import MCPSession
+from mcp_use.client import MCPClient
+from mcp_use.connectors.base import BaseConnector
+from mcp_use.session import MCPSession
 
 from ..logging import logger
 from .langchain_agent import LangChainAgent

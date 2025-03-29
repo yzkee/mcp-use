@@ -10,7 +10,7 @@ from typing import Any
 
 from mcp.types import CallToolResult
 
-from mcpeer.types import Tool
+from mcp_use.types import Tool
 
 
 class BaseConnector(ABC):

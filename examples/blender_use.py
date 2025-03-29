@@ -1,7 +1,7 @@
 """
 Blender MCP example for the Model-Agnostic MCP Library for LLMs.
 
-This example demonstrates how to use the mcpeer library with MCPClient
+This example demonstrates how to use the mcp_use library with MCPClient
 to connect an LLM to Blender through MCP tools via WebSocket.
 The example assumes you have installed the Blender MCP addon from:
 https://github.com/gd3kr/BlenderGPT/tree/main/mcp_addon
@@ -15,7 +15,7 @@ import asyncio
 from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
 
-from mcpeer import MCPAgent, MCPClient
+from mcp_use import MCPAgent, MCPClient
 
 
 async def run_blender_example():

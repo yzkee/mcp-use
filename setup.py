@@ -9,14 +9,14 @@ with open("README.md", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="mcpeer",
+    name="mcp_use",
     version="0.1.0",
     author="Pietro Zullo",
     author_email="pietro.zullo@gmail.com",
     description="Model-Agnostic MCP Library for LLMs",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/pietrozullo/mcpeer",
+    url="https://github.com/pietrozullo/mcp_use",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",

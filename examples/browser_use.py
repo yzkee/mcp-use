@@ -1,7 +1,7 @@
 """
 Basic usage example for the Model-Agnostic MCP Library for LLMs.
 
-This example demonstrates how to use the mcpeer library with MCPClient
+This example demonstrates how to use the mcp_use library with MCPClient
 to connect any LLM to MCP tools through a unified interface.
 """
 
@@ -11,7 +11,7 @@ import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 
-from mcpeer import MCPAgent, MCPClient
+from mcp_use import MCPAgent, MCPClient
 
 
 async def main():
@@ -20,7 +20,9 @@ async def main():
     load_dotenv()
 
     # Create MCPClient from config file
-    client = MCPClient.from_config_file(os.path.join(os.path.dirname(__file__), "browser_mcp.json"))
+    client = MCPClient.from_config_file(
+        os.path.join(os.path.dirname(__file__), "browser_mcp.json")
+    )
 
     # Create LLM
     llm = ChatOpenAI(model="gpt-4o")

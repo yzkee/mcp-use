@@ -1,7 +1,7 @@
 """
-Logger module for mcpeer.
+Logger module for mcp_use.
 
-This module provides a centralized logging configuration for the mcpeer library,
+This module provides a centralized logging configuration for the mcp_use library,
 with customizable log levels and formatters.
 """
 
@@ -11,7 +11,7 @@ import sys
 
 
 class Logger:
-    """Centralized logger for mcpeer.
+    """Centralized logger for mcp_use.
 
     This class provides logging functionality with configurable levels,
     formatters, and handlers.
@@ -24,11 +24,11 @@ class Logger:
     _loggers = {}
 
     @classmethod
-    def get_logger(cls, name: str = "mcpeer") -> logging.Logger:
+    def get_logger(cls, name: str = "mcp_use") -> logging.Logger:
         """Get a logger instance for the specified name.
 
         Args:
-            name: Logger name, usually the module name (defaults to 'mcpeer')
+            name: Logger name, usually the module name (defaults to 'mcp_use')
 
         Returns:
             Configured logger instance
@@ -50,7 +50,7 @@ class Logger:
         log_to_console: bool = True,
         log_to_file: str | None = None,
     ) -> None:
-        """Configure the root mcpeer logger.
+        """Configure the root mcp_use logger.
 
         Args:
             level: Log level (default: INFO)

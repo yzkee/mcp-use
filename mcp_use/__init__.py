@@ -1,5 +1,5 @@
 """
-mcpeer - A model-agnostic MCP (Multi-Channel Platform) library for LLMs.
+mcp_use - A model-agnostic MCP (Multi-Channel Platform) library for LLMs.
 
 This library provides a unified interface for connecting different LLMs
 to MCP tools through existing LangChain adapters.

@@ -19,7 +19,7 @@ ignore = []
 "tests/**/*.py" = ["F811", "F401"]  # Redefinition in test files
 
 [tool.ruff.lint.isort]
-known-first-party = ["mcpeer"]
+known-first-party = ["mcp_use"]
 
 [tool.ruff.format]
 quote-style = "double"

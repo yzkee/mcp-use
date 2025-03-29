@@ -1,7 +1,7 @@
 """
-Type definitions for the mcpeer package.
+Type definitions for the mcp_use package.
 
-This module provides type definitions used throughout the mcpeer package.
+This module provides type definitions used throughout the mcp_use package.
 """
 
 from typing import Any
