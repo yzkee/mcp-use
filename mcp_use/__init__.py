@@ -12,7 +12,7 @@ from .connectors import BaseConnector, HttpConnector, StdioConnector, WebSocketC
 from .logging import logger
 from .session import MCPSession
 
-__version__ = "0.1.0"
+__version__ = "0.0.3"
 __all__ = [
     "MCPAgent",
     "MCPClient",

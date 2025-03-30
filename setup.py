@@ -10,7 +10,7 @@ with open("README.md", encoding="utf-8") as fh:
 
 setup(
     name="mcp_use",
-    version="0.1.0",
+    version="0.0.3",
     author="Pietro Zullo",
     author_email="pietro.zullo@gmail.com",
     description="Model-Agnostic MCP Library for LLMs",
