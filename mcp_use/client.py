@@ -10,7 +10,6 @@ from typing import Any
 
 from .config import create_connector_from_config, load_config_file
 from .session import MCPSession
-from .tools.converter import ModelProvider
 
 
 class MCPClient:
@@ -23,16 +22,13 @@ class MCPClient:
     def __init__(
         self,
         config: str | dict[str, Any] | None = None,
-        model_provider: str | ModelProvider = "openai",
     ) -> None:
         """Initialize a new MCP client.
 
         Args:
             config: Either a dict containing configuration or a path to a JSON config file.
                    If None, an empty configuration is used.
-            model_provider: The model provider to use for tool conversion.
         """
-        self.model_provider = model_provider
         self.config: dict[str, Any] = {}
         self.sessions: dict[str, MCPSession] = {}
         self.active_session: str | None = None
@@ -142,7 +138,7 @@ class MCPClient:
         connector = create_connector_from_config(server_config)
 
         # Create the session
-        session = MCPSession(connector, self.model_provider)
+        session = MCPSession(connector)
         self.sessions[server_name] = session
 
         # Make this the active session

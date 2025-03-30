@@ -8,9 +8,7 @@ must implement.
 from abc import ABC, abstractmethod
 from typing import Any
 
-from mcp.types import CallToolResult
-
-from mcp_use.types import Tool
+from mcp.types import CallToolResult, Tool
 
 
 class BaseConnector(ABC):

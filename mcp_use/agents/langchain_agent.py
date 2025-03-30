@@ -201,9 +201,8 @@ class LangChainAgent:
             ]
         )
         agent = create_tool_calling_agent(llm=self.llm, tools=self.tools, prompt=prompt)
-        print(self.tools)
         return AgentExecutor(
-            agent=agent, tools=self.tools, max_iterations=self.max_steps, verbose=True
+            agent=agent, tools=self.tools, max_iterations=self.max_steps, verbose=False
         )
 
     async def run(

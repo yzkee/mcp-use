@@ -5,28 +5,10 @@ This module provides functionality to load MCP configuration from JSON files.
 """
 
 import json
-import os
-import subprocess
 from typing import Any
 
 from .connectors import BaseConnector, HttpConnector, StdioConnector, WebSocketConnector
 from .session import MCPSession
-from .tools.converter import ModelProvider
-
-
-def _execute_command(command: str, args: list[str], env: dict[str, str] | None = None) -> None:
-    """Execute a command with given arguments and environment variables.
-
-    Args:
-        command: The command to execute
-        args: List of command arguments
-        env: Optional environment variables to set
-    """
-    full_env = os.environ.copy()
-    if env:
-        full_env.update(env)
-
-    subprocess.Popen([command] + args, env=full_env)
 
 
 def load_config_file(filepath: str) -> dict[str, Any]:
@@ -81,14 +63,12 @@ def create_connector_from_config(server_config: dict[str, Any]) -> BaseConnector
 def create_session_from_config(
     filepath: str,
     server_name: str | None = None,
-    model_provider: str | ModelProvider = "openai",
 ) -> MCPSession:
     """Create an MCPSession from a configuration file.
 
     Args:
         filepath: Path to the configuration file
         server_name: Name of the server to use from config, uses first if None
-        model_provider: Model provider to use for tool conversion
 
     Returns:
         Configured MCPSession instance
@@ -110,4 +90,4 @@ def create_session_from_config(
     server_config = servers[server_name]
     connector = create_connector_from_config(server_config)
 
-    return MCPSession(connector, model_provider)
+    return MCPSession(connector)

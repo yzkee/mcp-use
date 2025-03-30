@@ -11,7 +11,6 @@ from .config import create_session_from_config, load_config_file
 from .connectors import BaseConnector, HttpConnector, StdioConnector, WebSocketConnector
 from .logging import logger
 from .session import MCPSession
-from .tools.converter import ModelProvider, ToolConverter
 
 __version__ = "0.1.0"
 __all__ = [
@@ -22,8 +21,6 @@ __all__ = [
     "StdioConnector",
     "WebSocketConnector",
     "HttpConnector",
-    "ModelProvider",
-    "ToolConverter",
     "create_session_from_config",
     "load_config_file",
     "logger",
