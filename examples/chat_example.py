@@ -3,6 +3,8 @@ Simple chat example using MCPAgent with built-in conversation memory.
 
 This example demonstrates how to use the MCPAgent with its built-in
 conversation history capabilities for better contextual interactions.
+
+Special thanks to https://github.com/microsoft/playwright-mcp for the server.
 """
 
 import asyncio

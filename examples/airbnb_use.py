@@ -3,6 +3,8 @@ Example demonstrating how to use mcp_use with Airbnb.
 
 This example shows how to connect an LLM to Airbnb through MCP tools
 to perform tasks like searching for accommodations.
+
+Special Thanks to https://github.com/openbnb-org/mcp-server-airbnb for the server.
 """
 
 import asyncio

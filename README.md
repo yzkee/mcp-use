@@ -1,10 +1,8 @@
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./static/mcp-use-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="./static/mcp-use.png">
-  <img alt="Shows a black MCP-Use Logo in light color mode and a white one in dark color mode." src="./static/mcp-use.png"  width="full">
+  <img alt="" src="./static/ghibli.png"  width="full">
 </picture>
 
-<h1 align="center">Use MCPs directly from python 🤖</h1>
+<h1 align="center">Open Source MCP CLient Library </h1>
 
 [![](https://img.shields.io/pypi/dd/mcp_use.svg)](https://pypi.org/project/mcp_use/)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/mcp_use.svg)](https://pypi.org/project/mcp_use/)

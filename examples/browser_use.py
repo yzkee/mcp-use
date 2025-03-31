@@ -3,6 +3,8 @@ Basic usage example for mcp_use.
 
 This example demonstrates how to use the mcp_use library with MCPClient
 to connect any LLM to MCP tools through a unified interface.
+
+Special thanks to https://github.com/microsoft/playwright-mcp for the server.
 """
 
 import asyncio

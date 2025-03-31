@@ -3,6 +3,9 @@ Basic usage example for mcp_use.
 
 This example demonstrates how to use the mcp_use library with MCPClient
 to connect any LLM to MCP tools through a unified interface.
+
+Special Thanks to https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem
+for the server.
 """
 
 import asyncio

@@ -4,10 +4,12 @@ Blender MCP example for mcp_use.
 This example demonstrates how to use the mcp_use library with MCPClient
 to connect an LLM to Blender through MCP tools via WebSocket.
 The example assumes you have installed the Blender MCP addon from:
-https://github.com/gd3kr/BlenderGPT/tree/main/mcp_addon
+https://github.com/ahujasid/blender-mcp
 
 Make sure the addon is enabled in Blender preferences and the WebSocket
 server is running before executing this script.
+
+Special thanks to https://github.com/ahujasid/blender-mcp for the server.
 """
 
 import asyncio
