@@ -1,5 +1,5 @@
 """
-Example demonstrating how to use the Model-Agnostic MCP Library for LLMs with Airbnb.
+Example demonstrating how to use mcp_use with Airbnb.
 
 This example shows how to connect an LLM to Airbnb through MCP tools
 to perform tasks like searching for accommodations.
@@ -20,9 +20,7 @@ async def run_airbnb_example():
     load_dotenv()
 
     # Create MCPClient with Airbnb configuration
-    client = MCPClient.from_config_file(
-        os.path.join(os.path.dirname(__file__), "airbnb_mcp.json")
-    )
+    client = MCPClient.from_config_file(os.path.join(os.path.dirname(__file__), "airbnb_mcp.json"))
     # Create LLM - you can choose between different models
     llm = ChatAnthropic(model="claude-3-5-sonnet-20240620")
     # Alternative models:

@@ -1,5 +1,5 @@
 """
-Model-Agnostic MCP: Main integration module.
+MCP: Main integration module.
 
 This module provides the main MCPAgent class that integrates all components
 to provide a simple interface for using MCP tools with different LLMs.

@@ -4,7 +4,7 @@
   <img alt="Shows a black MCP-Use Logo in light color mode and a white one in dark color mode." src="./static/mcp-use.png"  width="full">
 </picture>
 
-<h1 align="center">Model-Agnostic MCP Library for LLMs 🤖</h1>
+<h1 align="center">Use MCPs directly from python 🤖</h1>
 
 [![GitHub stars](https://img.shields.io/github/stars/pietrozullo/mcp-use?style=social)](https://github.com/pietrozullo/mcp-use/stargazers)
 
@@ -305,7 +305,7 @@ If you use MCP-Use in your research or project, please cite:
 ```bibtex
 @software{mcp_use2024,
   author = {Zullo, Pietro},
-  title = {MCP-Use: Model-Agnostic MCP Library for LLMs},
+  title = {MCP-Use: MCP Library for Python},
   year = {2024},
   publisher = {GitHub},
   url = {https://github.com/pietrozullo/mcp-use}

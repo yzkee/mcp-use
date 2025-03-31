@@ -1,5 +1,5 @@
 """
-Blender MCP example for the Model-Agnostic MCP Library for LLMs.
+Blender MCP example for mcp_use.
 
 This example demonstrates how to use the mcp_use library with MCPClient
 to connect an LLM to Blender through MCP tools via WebSocket.
