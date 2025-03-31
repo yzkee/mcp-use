@@ -6,9 +6,15 @@
 
 <h1 align="center">Use MCPs directly from python 🤖</h1>
 
+[![](https://img.shields.io/pypi/dd/mcp_use.svg)](https://pypi.org/project/mcp_use/)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/mcp_use.svg)](https://pypi.org/project/mcp_use/)
+[![PyPI Version](https://img.shields.io/pypi/v/mcp_use.svg)](https://pypi.org/project/mcp_use/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/mcp_use.svg)](https://pypi.org/project/mcp_use/)
+[![License](https://img.shields.io/github/license/pietrozullo/mcp-use)](https://github.com/pietrozullo/mcp-use/blob/main/LICENSE)
+[![Code style: Ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![GitHub stars](https://img.shields.io/github/stars/pietrozullo/mcp-use?style=social)](https://github.com/pietrozullo/mcp-use/stargazers)
 
-🌐 MCP-Use is the easiest way to connect any LLM to MCP tools through a unified interface without using closed source or application clients.
+🌐 MCP-Use is the open source way to connect any LLM to MCP tools and build custom agents that have tool access, without using closed source or application clients.
 
 💡 Let developers easily connect any LLM to tools like web browsing, file operations, and more.
 
