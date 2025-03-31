@@ -28,7 +28,7 @@ async def main():
     # llm = ChatAnthropic(model="claude-3-")
     # llm = ChatGroq(model="llama3-8b-8192")
 
-    # Create agent with the clientgsk_wBddPYne6amHptyAI4c7WGdyb3FYT9xxEu6JqUujDAlOvuSqGOsL
+    # Create agent with the client
     agent = MCPAgent(llm=llm, client=client, max_steps=30)
 
     # Run the query
