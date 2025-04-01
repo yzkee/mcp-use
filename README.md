@@ -21,14 +21,14 @@
 With pip:
 
 ```bash
-pip install mcp_use
+pip install mcp-use
 ```
 
 Or install from source:
 
 ```bash
-git clone https://github.com/pietrozullo/mcp_use.git
-cd mcp_use
+git clone https://github.com/pietrozullo/mcp-use.git
+cd mcp-use
 pip install -e .
 ```
 
