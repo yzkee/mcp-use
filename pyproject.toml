@@ -1,5 +1,5 @@
 [project]
-name = "mcp_use"
+name = "mcp-use"
 version = "0.0.4"
 description = "MCP Library for LLMs"
 authors = [
