@@ -124,7 +124,9 @@ class MCPAgent:
         # Generate tool descriptions
         tool_descriptions = []
         for tool in tools:
-            description = f"- {tool.name}: {tool.description}"
+            # Escape curly braces in the description by doubling them
+            # (sometimes e.g. blender mcp they are used in the description)
+            description = f"- {tool.name}: {tool.description.replace('{', '{{').replace('}', '}}')}"
             tool_descriptions.append(description)
 
         # Format the system prompt template with tool descriptions
