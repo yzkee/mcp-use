@@ -9,7 +9,7 @@ from importlib.metadata import version
 
 from .agents.mcpagent import MCPAgent
 from .client import MCPClient
-from .config import create_session_from_config, load_config_file
+from .config import load_config_file
 from .connectors import BaseConnector, HttpConnector, StdioConnector, WebSocketConnector
 from .logging import logger
 from .session import MCPSession
