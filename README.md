@@ -246,51 +246,12 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-# MCPClient for Managing Multiple Servers
-
-The `MCPClient` class provides a higher-level abstraction for managing multiple MCP servers from a single client:
-
-```python
-import asyncio
-from langchain_anthropic import ChatAnthropic
-from mcp_use import MCPAgent, MCPClient
-
-async def main():
-    # Create a client from a config file
-    client = MCPClient.from_config_file("mcp-config.json")
-
-    # Or initialize with a config file path
-    # client = MCPClient("mcp-config.json")
-
-    # Or programmatically add servers
-    client.add_server(
-        "local-ws",
-        {
-            "command": "npx",
-            "args": ["@playwright/mcp@latest", "headless"]
-        }
-    )
-
-    # Create an LLM
-    llm = ChatAnthropic(model="claude-3-5-sonnet-20240620")
-
-    # Create an agent using the client
-    agent = MCPAgent(
-        llm=llm,
-        client=client,
-        server_name="playwright",  # Optional, uses first server if not specified
-        max_steps=30
-    )
-
-    # Run a query
-    result = await agent.run("Your query here")
-
-    # Close all sessions
-    await client.close_all_sessions()
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
+## Roadmap
+<ul>
+<li>[ ] Multiple Servers at once </li>
+<li>[ ] Test remote connectors (http, ws)</li>
+<li>[ ] ... </li>
+</ul>
 
 ## Contributing
 
@@ -307,10 +268,10 @@ We love contributions! Feel free to open issues for bugs or feature requests.
 If you use MCP-Use in your research or project, please cite:
 
 ```bibtex
-@software{mcp_use2024,
+@software{mcp_use2025,
   author = {Zullo, Pietro},
   title = {MCP-Use: MCP Library for Python},
-  year = {2024},
+  year = {2025},
   publisher = {GitHub},
   url = {https://github.com/pietrozullo/mcp-use}
 }
