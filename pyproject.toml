@@ -1,6 +1,6 @@
 [project]
 name = "mcp-use"
-version = "0.0.5"
+version = "0.0.6"
 description = "MCP Library for LLMs"
 authors = [
     {name = "Pietro Zullo", email = "pietro.zullo@gmail.com"}
