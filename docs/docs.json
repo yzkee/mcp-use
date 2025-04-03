@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "mcp_use",
   "colors": {
-    "primary": "#0070F3",
-    "light": "#0070F3",
-    "dark": "#0070F3"
+    "primary": "#062c24",
+    "light": "#55e4c8",
+    "dark": "#000000"
   },
   "favicon": "/favicon.svg",
   "navigation": {

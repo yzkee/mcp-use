@@ -119,28 +119,41 @@ from mcp_use import MCPAgent, MCPClient
 from langchain_openai import ChatOpenAI
 
 agent = MCPAgent(
-    llm=ChatOpenAI(model="gpt-4"),
+    llm=ChatOpenAI(model="gpt-4", temperature=0.7),
     client=MCPClient.from_config_file("config.json"),
     max_steps=30,
-    temperature=0.7,
-    verbose=True,
-    session_options={"timeout": 60.0}
+    session_options={"timeout": 60.0},
+    auto_initialize=True,
+    memory_enabled=True,
+    system_prompt=None,
+    system_prompt_template=None,
+    additional_instructions=None
 )
 ```
 
-| Parameter         | Type          | Required | Default | Description                                |
-| ----------------- | ------------- | -------- | ------- | ------------------------------------------ |
-| `llm`             | BaseChatModel | Yes      | -       | The language model to use                  |
-| `client`          | MCPClient     | Yes      | -       | The MCPClient instance                     |
-| `max_steps`       | int           | No       | 30      | Maximum number of steps the agent can take |
-| `temperature`     | float         | No       | 0.7     | Controls randomness in the model's output  |
-| `verbose`         | bool          | No       | False   | Whether to print detailed logs             |
-| `session_options` | dict          | No       | {}      | Additional options for session creation    |
-| `retry_policy`    | dict          | No       | {}      | Configuration for retry behavior           |
-| `output_parser`   | OutputParser  | No       | None    | Custom output parser for LLM responses     |
-| `memory`          | BaseMemory    | No       | None    | Memory implementation for the agent        |
+| Parameter                 | Type                | Required | Default | Description                                |
+| ------------------------- | ------------------- | -------- | ------- | ------------------------------------------ |
+| `llm`                     | BaseLanguageModel   | Yes      | -       | Any LangChain-compatible language model    |
+| `client`                  | MCPClient           | No       | None    | The MCPClient instance                     |
+| `connectors`              | list[BaseConnector] | No       | None    | List of connectors if not using client     |
+| `server_name`             | str                 | No       | None    | Name of the server to use                  |
+| `max_steps`               | int                 | No       | 5       | Maximum number of steps the agent can take |
+| `auto_initialize`         | bool                | No       | False   | Whether to initialize automatically        |
+| `memory_enabled`          | bool                | No       | True    | Whether to enable memory                   |
+| `system_prompt`           | str                 | No       | None    | Custom system prompt                       |
+| `system_prompt_template`  | str                 | No       | None    | Custom system prompt template              |
+| `additional_instructions` | str                 | No       | None    | Additional instructions for the agent      |
+| `session_options`         | dict                | No       | {}      | Additional options for session creation    |
+| `output_parser`           | OutputParser        | No       | None    | Custom output parser for LLM responses     |
 
 **When to use different parameters**:
+
+- **llm**:
+
+  - mcp_use supports ANY LLM that is compatible with LangChain
+  - You can use models from OpenAI, Anthropic, Google, Mistral, Groq, Cohere, or any other provider with a LangChain integration
+  - You can even use open source models via LlamaCpp, HuggingFace, or other interfaces
+  - Custom or self-hosted models are also supported as long as they implement LangChain's interface
 
 - **max_steps**:
 
@@ -149,26 +162,20 @@ agent = MCPAgent(
   - Use higher values (50+) for web browsing or multi-stage tasks
   - Use lower values (10-20) for targeted, specific tasks
 
-- **temperature**:
+- **system_prompt / system_prompt_template**:
 
-  - Use lower values (0.1-0.3) for more deterministic, focused behavior
-  - Use higher values (0.7-0.9) for more creative exploration
-  - Lower is better for technical, factual tasks
-  - Higher is better for creative, exploratory tasks
+  - Use to customize the initial instructions given to the LLM
+  - Helps shape the agent's behavior and capabilities
+  - Use for specialized tasks or custom interaction patterns
 
-- **verbose**:
+- **memory_enabled**:
 
-  - Enable during development for debugging
-  - Disable in production for better performance
+  - Enable to maintain conversation history
+  - Disable for stateless operation or to save on token usage
 
 - **session_options**:
-
   - Customize timeout for long-running server operations
   - Set retry parameters for unstable connections
-
-- **retry_policy**:
-  - Configure how the agent handles failures (max_retries, backoff_factor)
-  - Useful for handling transient errors
 
 ### Core Methods
 

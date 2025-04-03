@@ -1,13 +1,30 @@
 ---
 title: LLM Integration
-description: "Integrate different LLMs with mcp_use"
+description: "Integrate any LLM with mcp_use through LangChain"
 ---
 
 # LLM Integration Guide
 
-mcp_use supports integration with various Language Learning Models (LLMs). This guide covers how to use different LLM providers with mcp_use.
+mcp_use supports integration with **any** Language Learning Model (LLM) that is compatible with LangChain. This guide covers how to use different LLM providers with mcp_use and emphasizes the flexibility to use any LangChain-supported model.
 
-## Supported LLM Providers
+## Universal LLM Support
+
+mcp_use leverages LangChain's architecture to support any LLM that implements the LangChain interface. This means you can use virtually any model from any provider, including:
+
+- OpenAI models (GPT-4, GPT-3.5, etc.)
+- Anthropic models (Claude)
+- Google models (Gemini)
+- Mistral models
+- Groq models
+- Llama models
+- Cohere models
+- Open source models (via LlamaCpp, HuggingFace, etc.)
+- Custom or self-hosted models
+- Any other model with a LangChain integration
+
+## Example LLM Integrations
+
+Here are some examples of how to integrate different LLM providers:
 
 ### OpenAI
 
@@ -47,15 +64,15 @@ agent = MCPAgent(
 )
 ```
 
-### Groq
+### Google
 
 ```python
-from langchain_groq import ChatGroq
+from langchain_google_genai import ChatGoogleGenerativeAI
 from mcp_use import MCPAgent, MCPClient
 
-# Create Groq LLM
-llm = ChatGroq(
-    model="llama3-8b-8192",
+# Create Google LLM
+llm = ChatGoogleGenerativeAI(
+    model="gemini-pro",
     temperature=0.7
 )
 
@@ -66,11 +83,75 @@ agent = MCPAgent(
 )
 ```
 
+### Hugging Face
+
+```python
+from langchain_huggingface import HuggingFaceEndpoint
+from mcp_use import MCPAgent, MCPClient
+
+# Create HuggingFace LLM
+llm = HuggingFaceEndpoint(
+    repo_id="mistralai/Mistral-7B-Instruct-v0.1",
+    max_length=512
+)
+
+# Use with mcp_use
+agent = MCPAgent(
+    llm=llm,
+    client=MCPClient.from_config_file("config.json")
+)
+```
+
+### Open Source Models
+
+```python
+from langchain_community.llms import LlamaCpp
+from mcp_use import MCPAgent, MCPClient
+
+# Create LlamaCpp LLM
+llm = LlamaCpp(
+    model_path="./models/llama-2-7b-chat.gguf",
+    temperature=0.7
+)
+
+# Use with mcp_use
+agent = MCPAgent(
+    llm=llm,
+    client=MCPClient.from_config_file("config.json")
+)
+```
+
+## Creating a Custom LLM
+
+You can even implement your own custom LLM by extending LangChain's interface:
+
+```python
+from langchain.llms.base import LLM
+from typing import Any, List, Optional
+from mcp_use import MCPAgent, MCPClient
+
+class CustomLLM(LLM):
+    def _call(self, prompt: str, stop: Optional[List[str]] = None) -> str:
+        # Implement your custom LLM logic here
+        return "Your custom LLM response"
+
+    @property
+    def _llm_type(self) -> str:
+        return "custom"
+
+# Use with mcp_use
+llm = CustomLLM()
+agent = MCPAgent(
+    llm=llm,
+    client=MCPClient.from_config_file("config.json")
+)
+```
+
 ## LLM Configuration Options
 
-All LLM providers support common configuration options:
+LLM providers typically support common configuration options, though the exact parameters may vary:
 
-- `model`: The specific model to use (e.g., "gpt-4", "claude-3-5-sonnet-20240620")
+- `model`: The specific model to use
 - `temperature`: Controls randomness in the model's output (0.0 to 1.0)
 - `max_tokens`: Maximum number of tokens to generate
 - `streaming`: Whether to stream the response
@@ -100,19 +181,27 @@ All LLM providers support common configuration options:
    - Use streaming for long responses
    - Implement proper error handling
 
-## Example: Web Browsing with Different LLMs
+## Example: Web Browsing with Any LLM
 
 ```python
 import asyncio
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
 from mcp_use import MCPAgent, MCPClient
+
+# Import the LLM provider of your choice
+# from langchain_openai import ChatOpenAI
+# from langchain_anthropic import ChatAnthropic
+# from langchain_google_genai import ChatGoogleGenerativeAI
+# etc.
 
 async def main():
     load_dotenv()
 
-    # Choose your LLM provider
-    llm = ChatOpenAI(model="gpt-4")  # or ChatAnthropic, ChatGroq
+    # Choose ANY LangChain-compatible LLM
+    # llm = ChatOpenAI(model="gpt-4", temperature=0.7)
+    # llm = ChatAnthropic(model="claude-3-5-sonnet-20240620")
+    # llm = ChatGoogleGenerativeAI(model="gemini-pro")
+    llm = your_chosen_llm_here()
 
     # Create agent
     agent = MCPAgent(
