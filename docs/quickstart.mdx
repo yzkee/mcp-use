@@ -67,7 +67,7 @@ async def main():
     client = MCPClient.from_config_file("browser_mcp.json")
 
     # Create LLM
-    llm = ChatOpenAI(model="gpt-4")
+    llm = ChatOpenAI(model="gpt-4o")
 
     # Create agent with the client
     agent = MCPAgent(llm=llm, client=client, max_steps=30)
