@@ -1,0 +1,378 @@
+---
+title: API Reference
+description: "Complete mcp_use API Documentation"
+---
+
+# API Reference
+
+This section provides comprehensive documentation for the mcp_use API, including all components, methods, their arguments, and when to use different options.
+
+## MCPClient
+
+The `MCPClient` is the core class for interacting with MCP servers. It handles connection management, session creation, and communication with MCP servers.
+
+### Initialization Methods
+
+#### From Config File
+
+```python
+from mcp_use import MCPClient
+
+client = MCPClient.from_config_file(config_path="config.json")
+```
+
+| Parameter     | Type | Required | Description                         |
+| ------------- | ---- | -------- | ----------------------------------- |
+| `config_path` | str  | Yes      | Path to the JSON configuration file |
+
+#### From Dictionary
+
+```python
+from mcp_use import MCPClient
+
+config = {
+  "mcpServers": {
+    "my_server": {
+      "command": "npx",
+      "args": ["@my-mcp/server"],
+      "env": {
+        "PORT": "3000"
+      }
+    }
+  }
+}
+
+client = MCPClient.from_dict(config=config)
+```
+
+| Parameter | Type | Required | Description                                    |
+| --------- | ---- | -------- | ---------------------------------------------- |
+| `config`  | dict | Yes      | Dictionary containing MCP server configuration |
+
+### Core Methods
+
+#### create_session
+
+Creates a new session with an MCP server.
+
+```python
+session = await client.create_session(server_name="my_server")
+```
+
+| Parameter     | Type  | Required | Default | Description                             |
+| ------------- | ----- | -------- | ------- | --------------------------------------- |
+| `server_name` | str   | Yes      | -       | Name of the server as defined in config |
+| `timeout`     | float | No       | 30.0    | Connection timeout in seconds           |
+| `retry_count` | int   | No       | 3       | Number of connection retry attempts     |
+
+**When to use**:
+
+- Use a longer `timeout` for servers that take more time to initialize
+- Increase `retry_count` in unstable network environments
+- Use specific `server_name` when working with multiple servers in the same config
+
+#### close_session
+
+Closes a specific session.
+
+```python
+await client.close_session(session_id="session_id")
+```
+
+| Parameter    | Type | Required | Description                |
+| ------------ | ---- | -------- | -------------------------- |
+| `session_id` | str  | Yes      | ID of the session to close |
+
+#### close_all_sessions
+
+Closes all active sessions.
+
+```python
+await client.close_all_sessions()
+```
+
+**When to use**:
+
+- Always call this at the end of your application to clean up resources
+- Use when switching between different tasks that require different servers
+
+#### get_server
+
+Gets a server instance by name.
+
+```python
+server = client.get_server(name="my_server")
+```
+
+| Parameter | Type | Required | Description                             |
+| --------- | ---- | -------- | --------------------------------------- |
+| `name`    | str  | Yes      | Name of the server as defined in config |
+
+## MCPAgent
+
+The `MCPAgent` class combines an LLM with an MCPClient to create an intelligent agent capable of using MCP tools.
+
+### Initialization
+
+```python
+from mcp_use import MCPAgent, MCPClient
+from langchain_openai import ChatOpenAI
+
+agent = MCPAgent(
+    llm=ChatOpenAI(model="gpt-4"),
+    client=MCPClient.from_config_file("config.json"),
+    max_steps=30,
+    temperature=0.7,
+    verbose=True,
+    session_options={"timeout": 60.0}
+)
+```
+
+| Parameter         | Type          | Required | Default | Description                                |
+| ----------------- | ------------- | -------- | ------- | ------------------------------------------ |
+| `llm`             | BaseChatModel | Yes      | -       | The language model to use                  |
+| `client`          | MCPClient     | Yes      | -       | The MCPClient instance                     |
+| `max_steps`       | int           | No       | 30      | Maximum number of steps the agent can take |
+| `temperature`     | float         | No       | 0.7     | Controls randomness in the model's output  |
+| `verbose`         | bool          | No       | False   | Whether to print detailed logs             |
+| `session_options` | dict          | No       | {}      | Additional options for session creation    |
+| `retry_policy`    | dict          | No       | {}      | Configuration for retry behavior           |
+| `output_parser`   | OutputParser  | No       | None    | Custom output parser for LLM responses     |
+| `memory`          | BaseMemory    | No       | None    | Memory implementation for the agent        |
+
+**When to use different parameters**:
+
+- **max_steps**:
+
+  - Increase for complex tasks that require many interactions
+  - Decrease for simpler tasks to improve efficiency
+  - Use higher values (50+) for web browsing or multi-stage tasks
+  - Use lower values (10-20) for targeted, specific tasks
+
+- **temperature**:
+
+  - Use lower values (0.1-0.3) for more deterministic, focused behavior
+  - Use higher values (0.7-0.9) for more creative exploration
+  - Lower is better for technical, factual tasks
+  - Higher is better for creative, exploratory tasks
+
+- **verbose**:
+
+  - Enable during development for debugging
+  - Disable in production for better performance
+
+- **session_options**:
+
+  - Customize timeout for long-running server operations
+  - Set retry parameters for unstable connections
+
+- **retry_policy**:
+  - Configure how the agent handles failures (max_retries, backoff_factor)
+  - Useful for handling transient errors
+
+### Core Methods
+
+#### run
+
+Runs the agent with a given query.
+
+```python
+result = await agent.run(
+    query="Find information about Python libraries",
+    max_steps=25,
+    stop_on_first_result=False
+)
+```
+
+| Parameter              | Type | Required | Default | Description                      |
+| ---------------------- | ---- | -------- | ------- | -------------------------------- |
+| `query`                | str  | Yes      | -       | The query to run                 |
+| `max_steps`            | int  | No       | None    | Overrides the instance max_steps |
+| `stop_on_first_result` | bool | No       | False   | Whether to stop at first result  |
+| `server_name`          | str  | No       | None    | Specific server to use           |
+| `callbacks`            | list | No       | None    | Callback functions for events    |
+
+**When to use different parameters**:
+
+- **max_steps**: Override the instance default for specific queries
+- **stop_on_first_result**: Use True for simple lookups, False for thorough exploration
+- **server_name**: Specify when using multiple servers for different tasks
+- **callbacks**: Add for monitoring or logging specific runs
+
+#### reset
+
+Resets the agent state.
+
+```python
+agent.reset()
+```
+
+**When to use**:
+
+- Between different tasks to clear context
+- When starting a new conversation thread
+- When agent gets stuck in a particular strategy
+
+#### get_history
+
+Gets the agent's interaction history.
+
+```python
+history = agent.get_history()
+```
+
+**When to use**:
+
+- For debugging agent behavior
+- When implementing custom logging
+- To provide context for follow-up queries
+
+## Configuration Details
+
+### MCP Server Configuration Schema
+
+```json
+{
+  "mcpServers": {
+    "server_name": {
+      "command": "command_to_run",
+      "args": ["arg1", "arg2"],
+      "env": {
+        "ENV_VAR": "value"
+      },
+      "timeout": 30.0,
+      "retry": {
+        "max_attempts": 3,
+        "backoff_factor": 1.5
+      }
+    }
+  }
+}
+```
+
+| Field                  | Type   | Required | Description                          |
+| ---------------------- | ------ | -------- | ------------------------------------ |
+| `command`              | string | Yes      | The command to start the MCP server  |
+| `args`                 | array  | No       | Arguments to pass to the command     |
+| `env`                  | object | No       | Environment variables for the server |
+| `timeout`              | number | No       | Connection timeout in seconds        |
+| `retry`                | object | No       | Retry configuration                  |
+| `retry.max_attempts`   | number | No       | Maximum retry attempts               |
+| `retry.backoff_factor` | number | No       | Backoff multiplier between retries   |
+
+**When to use different options**:
+
+- **command & args**: Vary based on the specific MCP server implementation
+- **env**:
+
+  - Set environment-specific variables needed by the server
+  - Override default server settings (ports, directories)
+  - Set display settings for GUI-based servers
+
+- **timeout**:
+
+  - Increase for servers with longer startup times
+  - Lower for simpler servers to fail fast
+
+- **retry configuration**:
+  - Adjust for different network conditions
+  - Increase max_attempts in unstable environments
+  - Adjust backoff_factor based on server behavior
+
+## Error Handling
+
+mcp_use provides several exception types to handle different error scenarios:
+
+| Exception                | Description                       | When It Occurs                      |
+| ------------------------ | --------------------------------- | ----------------------------------- |
+| `MCPConnectionError`     | Connection to MCP server failed   | Network issues, server not running  |
+| `MCPAuthenticationError` | Authentication with server failed | Invalid credentials or tokens       |
+| `MCPTimeoutError`        | Operation timed out               | Server takes too long to respond    |
+| `MCPServerError`         | Server returned an error          | Internal server error               |
+| `MCPClientError`         | Client-side error                 | Invalid configuration or parameters |
+| `MCPError`               | Generic MCP-related error         | Any other MCP-related issue         |
+
+**Handling Strategies**:
+
+```python
+from mcp_use.exceptions import MCPConnectionError, MCPTimeoutError
+
+try:
+    result = await agent.run("Find information")
+except MCPConnectionError:
+    # Handle connection issues
+    print("Failed to connect to the MCP server")
+except MCPTimeoutError:
+    # Handle timeout issues
+    print("Operation timed out")
+except Exception as e:
+    # Handle other exceptions
+    print(f"An error occurred: {e}")
+```
+
+## Advanced Usage
+
+### Multi-Server Configuration
+
+Configure and use multiple MCP servers in a single application:
+
+```python
+from mcp_use import MCPClient, MCPAgent
+from langchain_openai import ChatOpenAI
+
+# Create client with multiple servers
+client = MCPClient.from_dict({
+    "mcpServers": {
+        "browser": {
+            "command": "npx",
+            "args": ["@playwright/mcp@latest"]
+        },
+        "custom_server": {
+            "command": "python",
+            "args": ["-m", "my_custom_mcp_server"]
+        }
+    }
+})
+
+# Create agent
+agent = MCPAgent(llm=ChatOpenAI(model="gpt-4"), client=client)
+
+# Run with specific server
+result_browser = await agent.run(
+    "Search the web for Python libraries",
+    server_name="browser"
+)
+
+# Run with different server
+result_custom = await agent.run(
+    "Perform custom operation",
+    server_name="custom_server"
+)
+```
+
+### Custom Output Parsing
+
+Implement custom output parsers for specialized MCP servers:
+
+```python
+from langchain.schema import OutputParser
+from mcp_use import MCPAgent, MCPClient
+
+class CustomOutputParser(OutputParser):
+    def parse(self, text):
+        # Custom parsing logic
+        return processed_result
+
+# Use the custom parser
+agent = MCPAgent(
+    llm=llm,
+    client=client,
+    output_parser=CustomOutputParser()
+)
+```
+
+This approach is useful when:
+
+- The MCP server returns structured data that needs special handling
+- You need to extract specific information from responses
+- You're integrating with custom or specialized MCP servers

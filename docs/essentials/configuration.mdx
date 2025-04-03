@@ -1,0 +1,115 @@
+---
+title: Configuration
+description: "Configure your mcp_use environment"
+---
+
+# Configuration Guide
+
+This guide covers all the configuration options available in mcp_use.
+
+## Environment Variables
+
+mcp_use requires certain environment variables to be set for different LLM providers:
+
+```bash
+# OpenAI
+OPENAI_API_KEY=your_api_key_here
+
+# Anthropic
+ANTHROPIC_API_KEY=your_api_key_here
+
+# Groq
+GROQ_API_KEY=your_api_key_here
+```
+
+## MCP Server Configuration
+
+mcp_use supports any MCP server through a flexible configuration system. The configuration is defined in a JSON file with the following structure:
+
+```json
+{
+  "mcpServers": {
+    "server_name": {
+      "command": "command_to_run",
+      "args": ["arg1", "arg2"],
+      "env": {
+        "ENV_VAR": "value"
+      }
+    }
+  }
+}
+```
+
+### Configuration Options
+
+- `server_name`: A unique identifier for your MCP server
+- `command`: The command to start the MCP server
+- `args`: Array of arguments to pass to the command
+- `env`: Environment variables to set for the server
+
+### Example Configuration
+
+Here's a basic example of how to configure an MCP server:
+
+```json
+{
+  "mcpServers": {
+    "my_server": {
+      "command": "npx",
+      "args": ["@my-mcp/server"],
+      "env": {
+        "PORT": "3000"
+      }
+    }
+  }
+}
+```
+
+## Agent Configuration
+
+When creating an MCPAgent, you can configure several parameters:
+
+```python
+from mcp_use import MCPAgent, MCPClient
+from langchain_openai import ChatOpenAI
+
+# Basic configuration
+agent = MCPAgent(
+    llm=ChatOpenAI(model="gpt-4"),
+    client=MCPClient.from_config_file("config.json"),
+    max_steps=30
+)
+
+# Advanced configuration
+agent = MCPAgent(
+    llm=ChatOpenAI(model="gpt-4"),
+    client=MCPClient.from_config_file("config.json"),
+    max_steps=30,
+    temperature=0.7,
+    verbose=True
+)
+```
+
+### Available Parameters
+
+- `llm`: The language model to use (required)
+- `client`: The MCPClient instance (required)
+- `max_steps`: Maximum number of steps the agent can take (default: 30)
+- `temperature`: Controls randomness in the model's output (default: 0.7)
+- `verbose`: Whether to print detailed logs (default: False)
+
+## Error Handling
+
+mcp_use provides several ways to handle errors:
+
+1. **Connection Errors**: Check your MCP server configuration and ensure the server is running
+2. **Authentication Errors**: Verify your API keys are correctly set in the environment
+3. **Timeout Errors**: Adjust the `max_steps` parameter if operations are timing out
+
+## Best Practices
+
+1. Always use environment variables for sensitive information
+2. Keep configuration files in version control (without sensitive data)
+3. Use appropriate timeouts for different types of operations
+4. Enable verbose logging during development
+5. Test configurations in a development environment before production

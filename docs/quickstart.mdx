@@ -1,0 +1,99 @@
+---
+title: Quickstart
+description: "Get started with mcp_use in minutes"
+---
+
+# Quickstart Guide
+
+This guide will help you get started with mcp_use quickly. We'll cover installation, basic configuration, and running your first agent.
+
+## Installation
+
+You can install mcp_use using pip:
+
+```bash
+pip install mcp-use
+```
+
+Or install from source:
+
+```bash
+git clone https://github.com/pietrozullo/mcp-use.git
+cd mcp-use
+pip install -e .
+```
+
+## Basic Setup
+
+1. Create a configuration file (e.g., `browser_mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "env": {
+        "DISPLAY": ":1"
+      }
+    }
+  }
+}
+```
+
+2. Set up your environment variables in a `.env` file:
+
+```bash
+OPENAI_API_KEY=your_api_key_here
+ANTHROPIC_API_KEY=your_api_key_here
+```
+
+## Your First Agent
+
+Here's a simple example to get you started:
+
+```python
+import asyncio
+import os
+from dotenv import load_dotenv
+from langchain_openai import ChatOpenAI
+from mcp_use import MCPAgent, MCPClient
+
+async def main():
+    # Load environment variables
+    load_dotenv()
+
+    # Create MCPClient from config file
+    client = MCPClient.from_config_file("browser_mcp.json")
+
+    # Create LLM
+    llm = ChatOpenAI(model="gpt-4")
+
+    # Create agent with the client
+    agent = MCPAgent(llm=llm, client=client, max_steps=30)
+
+    # Run the query
+    result = await agent.run(
+        "Find the best restaurant in San Francisco USING GOOGLE SEARCH",
+    )
+    print(f"\nResult: {result}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+## Available MCP Servers
+
+mcp_use supports various MCP servers:
+
+- **Playwright**: For web browsing and automation
+- **Airbnb**: For property search and booking
+- **Blender**: For 3D modeling and animation
+
+Each server requires its own configuration. Check the [Configuration Guide](/essentials/configuration) for details.
+
+## Next Steps
+
+- Learn about [Configuration Options](/essentials/configuration)
+- Explore [Example Use Cases](/examples)
+- Check out [Advanced Features](/essentials/advanced)

@@ -1,0 +1,132 @@
+---
+title: LLM Integration
+description: "Integrate different LLMs with mcp_use"
+---
+
+# LLM Integration Guide
+
+mcp_use supports integration with various Language Learning Models (LLMs). This guide covers how to use different LLM providers with mcp_use.
+
+## Supported LLM Providers
+
+### OpenAI
+
+```python
+from langchain_openai import ChatOpenAI
+from mcp_use import MCPAgent, MCPClient
+
+# Create OpenAI LLM
+llm = ChatOpenAI(
+    model="gpt-4",
+    temperature=0.7
+)
+
+# Use with mcp_use
+agent = MCPAgent(
+    llm=llm,
+    client=MCPClient.from_config_file("config.json")
+)
+```
+
+### Anthropic
+
+```python
+from langchain_anthropic import ChatAnthropic
+from mcp_use import MCPAgent, MCPClient
+
+# Create Anthropic LLM
+llm = ChatAnthropic(
+    model="claude-3-5-sonnet-20240620",
+    temperature=0.7
+)
+
+# Use with mcp_use
+agent = MCPAgent(
+    llm=llm,
+    client=MCPClient.from_config_file("config.json")
+)
+```
+
+### Groq
+
+```python
+from langchain_groq import ChatGroq
+from mcp_use import MCPAgent, MCPClient
+
+# Create Groq LLM
+llm = ChatGroq(
+    model="llama3-8b-8192",
+    temperature=0.7
+)
+
+# Use with mcp_use
+agent = MCPAgent(
+    llm=llm,
+    client=MCPClient.from_config_file("config.json")
+)
+```
+
+## LLM Configuration Options
+
+All LLM providers support common configuration options:
+
+- `model`: The specific model to use (e.g., "gpt-4", "claude-3-5-sonnet-20240620")
+- `temperature`: Controls randomness in the model's output (0.0 to 1.0)
+- `max_tokens`: Maximum number of tokens to generate
+- `streaming`: Whether to stream the response
+
+## Best Practices
+
+1. **Model Selection**:
+
+   - Choose models based on your specific needs (speed vs. quality)
+   - Consider token limits and costs
+   - Test different models for your use case
+
+2. **Temperature Settings**:
+
+   - Use lower temperatures (0.1-0.3) for more deterministic outputs
+   - Use higher temperatures (0.7-0.9) for more creative outputs
+   - Adjust based on your specific use case
+
+3. **Error Handling**:
+
+   - Implement retry logic for rate limits
+   - Handle token limit errors gracefully
+   - Monitor API usage and costs
+
+4. **Performance Optimization**:
+   - Cache responses when appropriate
+   - Use streaming for long responses
+   - Implement proper error handling
+
+## Example: Web Browsing with Different LLMs
+
+```python
+import asyncio
+from dotenv import load_dotenv
+from langchain_openai import ChatOpenAI
+from mcp_use import MCPAgent, MCPClient
+
+async def main():
+    load_dotenv()
+
+    # Choose your LLM provider
+    llm = ChatOpenAI(model="gpt-4")  # or ChatAnthropic, ChatGroq
+
+    # Create agent
+    agent = MCPAgent(
+        llm=llm,
+        client=MCPClient.from_config_file("browser_mcp.json"),
+        max_steps=30
+    )
+
+    # Run query
+    result = await agent.run(
+        "Find the best restaurant in San Francisco USING GOOGLE SEARCH"
+    )
+    print(f"\nResult: {result}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
