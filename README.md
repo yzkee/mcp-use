@@ -1,5 +1,5 @@
 <picture>
-  <img alt="" src="./static/mcpusegrass.png"  width="full">
+  <img alt="" src="./static/image.jpg"  width="full">
 </picture>
 
 <h1 align="center">Open Source MCP CLient Library </h1>
