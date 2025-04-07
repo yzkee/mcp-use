@@ -54,7 +54,7 @@ class HttpConnector(BaseConnector):
         logger.info(f"Connecting to MCP implementation via HTTP/SSE: {self.base_url}")
         try:
             # Create the SSE connection URL
-            sse_url = f"{self.base_url}/sse"
+            sse_url = f"{self.base_url}"
 
             # Create and start the connection manager
             self._connection_manager = SseConnectionManager(

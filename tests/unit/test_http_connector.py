@@ -111,7 +111,7 @@ class TestHttpConnectorConnection(IsolatedAsyncioTestCase):
         await self.connector.connect()
 
         # Verify connection manager was created and started
-        mock_cm_class.assert_called_once_with("http://localhost:8000/sse", {}, 5, 300)
+        mock_cm_class.assert_called_once_with("http://localhost:8000", {}, 5, 300)
         mock_cm_instance.start.assert_called_once()
 
         # Verify client session was created
