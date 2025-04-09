@@ -33,7 +33,31 @@ cd mcp-use
 pip install -e .
 ```
 
-Spin up your agent:
+### Installing LangChain Providers
+
+mcp_use works with various LLM providers through LangChain. You'll need to install the appropriate LangChain provider package for your chosen LLM. For example:
+
+```bash
+# For OpenAI
+pip install langchain-openai
+
+# For Anthropic
+pip install langchain-anthropic
+
+# For other providers, check the [LangChain chat models documentation](https://python.langchain.com/docs/integrations/chat/)
+```
+
+and add your API keys for the provider you want to use to your `.env` file.
+
+```bash
+OPENAI_API_KEY=
+ANTHROPIC_API_KEY=
+```
+
+
+> **Important**: Only models with tool calling capabilities can be used with mcp_use. Make sure your chosen model supports function calling or tool use.
+
+### Spin up your agent:
 
 ```python
 import asyncio
@@ -46,8 +70,21 @@ async def main():
     # Load environment variables
     load_dotenv()
 
-    # Create MCPClient from config file
-    client = MCPClient.from_config_file("browser_mcp.json")
+    # Create configuration dictionary
+    config = {
+      "mcpServers": {
+        "playwright": {
+          "command": "npx",
+          "args": ["@playwright/mcp@latest"],
+          "env": {
+            "DISPLAY": ":1"
+          }
+        }
+      }
+    }
+
+    # Create MCPClient from configuration dictionary
+    client = MCPClient.from_dict(config)
 
     # Create LLM
     llm = ChatOpenAI(model="gpt-4o")
@@ -57,12 +94,20 @@ async def main():
 
     # Run the query
     result = await agent.run(
-        "Find the best restaurant in San Francisco USING GOOGLE SEARCH",
+        "Find the best restaurant in San Francisco",
     )
     print(f"\nResult: {result}")
 
 if __name__ == "__main__":
     asyncio.run(main())
+```
+
+You can also add the servers configuration from a config file like this:
+
+```python
+client = MCPClient.from_config_file(
+        os.path.join("browser_mcp.json")
+    )
 ```
 
 Example configuration file (`browser_mcp.json`):
@@ -81,12 +126,6 @@ Example configuration file (`browser_mcp.json`):
 }
 ```
 
-Add your API keys for the provider you want to use to your `.env` file.
-
-```bash
-OPENAI_API_KEY=
-ANTHROPIC_API_KEY=
-```
 
 For other settings, models, and more, check out the documentation.
 

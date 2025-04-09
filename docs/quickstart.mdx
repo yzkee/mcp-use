@@ -23,25 +23,25 @@ cd mcp-use
 pip install -e .
 ```
 
-## Basic Setup
+## Installing LangChain Providers
 
-1. Create a configuration file (e.g., `browser_mcp.json`):
+mcp_use works with various LLM providers through LangChain. You'll need to install the appropriate LangChain provider package for your chosen LLM. For example:
 
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@latest"],
-      "env": {
-        "DISPLAY": ":1"
-      }
-    }
-  }
-}
+```bash
+# For OpenAI
+pip install langchain-openai
+
+# For Anthropic
+pip install langchain-anthropic
+
+# For other providers, check the [LangChain chat models documentation](https://python.langchain.com/docs/integrations/chat/)
 ```
 
-2. Set up your environment variables in a `.env` file:
+> **Important**: Only models with tool calling capabilities can be used with mcp_use. Make sure your chosen model supports function calling or tool use.
+
+## Environment Setup
+
+Set up your environment variables in a `.env` file:
 
 ```bash
 OPENAI_API_KEY=your_api_key_here
@@ -63,8 +63,21 @@ async def main():
     # Load environment variables
     load_dotenv()
 
-    # Create MCPClient from config file
-    client = MCPClient.from_config_file("browser_mcp.json")
+    # Create configuration dictionary
+    config = {
+      "mcpServers": {
+        "playwright": {
+          "command": "npx",
+          "args": ["@playwright/mcp@latest"],
+          "env": {
+            "DISPLAY": ":1"
+          }
+        }
+      }
+    }
+
+    # Create MCPClient from configuration dictionary
+    client = MCPClient.from_dict(config)
 
     # Create LLM
     llm = ChatOpenAI(model="gpt-4o")
@@ -82,6 +95,32 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+## Configuration Options
+
+You can also add the servers configuration from a config file:
+
+```python
+client = MCPClient.from_config_file(
+    os.path.join("browser_mcp.json")
+)
+```
+
+Example configuration file (`browser_mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "env": {
+        "DISPLAY": ":1"
+      }
+    }
+  }
+}
+```
+
 ## Restricting Tool Access
 
 You can control which tools are available to the agent:
@@ -97,8 +136,21 @@ async def main():
     # Load environment variables
     load_dotenv()
 
-    # Create MCPClient from config file
-    client = MCPClient.from_config_file("browser_mcp.json")
+    # Create configuration dictionary
+    config = {
+      "mcpServers": {
+        "playwright": {
+          "command": "npx",
+          "args": ["@playwright/mcp@latest"],
+          "env": {
+            "DISPLAY": ":1"
+          }
+        }
+      }
+    }
+
+    # Create MCPClient from configuration dictionary
+    client = MCPClient.from_dict(config)
 
     # Create LLM
     llm = ChatOpenAI(model="gpt-4o")
