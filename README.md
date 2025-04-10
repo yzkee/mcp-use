@@ -140,7 +140,6 @@ Example configuration file (`browser_mcp.json`):
 
 For other settings, models, and more, check out the documentation.
 
-# Features
 
 # Example Use Cases
 
