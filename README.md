@@ -2,7 +2,7 @@
   <img alt="" src="./static/image.jpg"  width="full">
 </picture>
 
-<h1 align="center">Open Source MCP Client Library </h1>
+<h1 align="center">Unified MCP Client Library </h1>
 
 [![](https://img.shields.io/pypi/dw/mcp_use.svg)](https://pypi.org/project/mcp_use/)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/mcp_use.svg)](https://pypi.org/project/mcp_use/)
@@ -12,7 +12,6 @@
 [![License](https://img.shields.io/github/license/pietrozullo/mcp-use)](https://github.com/pietrozullo/mcp-use/blob/main/LICENSE)
 [![Code style: Ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![GitHub stars](https://img.shields.io/github/stars/pietrozullo/mcp-use?style=social)](https://github.com/pietrozullo/mcp-use/stargazers)
-[![](https://dcbadge.limes.pink/api/server/https://discord.gg/qvqgEJpN?style=flat)](https://discord.gg/https://discord.gg/qvqgEJpN)
 [![Twitter Follow](https://img.shields.io/twitter/follow/Pietro?style=social)](https://x.com/pietrozullo)
 
 🌐 MCP-Use is the open source way to connect **any LLM to any MCP server** and build custom agents that have tool access, without using closed source or application clients.
@@ -472,6 +471,10 @@ if __name__ == "__main__":
 <li>[x] Test remote connectors (http, ws)</li>
 <li>[ ] ... </li>
 </ul>
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=pietrozullo/mcp-use&type=Date)](https://www.star-history.com/#pietrozullo/mcp-use&Date)
 
 # Contributing
 

@@ -35,7 +35,10 @@ async def main():
 
     # Run the query
     result = await agent.run(
-        "Navigate to https://github.com/mcp-use/mcp-use and write a summary of the project",
+        """
+        Navigate to https://github.com/mcp-use/mcp-use, give a star to the project and write
+        a summary of the project.
+        """,
         max_steps=30,
     )
     print(f"\nResult: {result}")

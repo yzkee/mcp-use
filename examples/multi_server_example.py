@@ -37,7 +37,7 @@ async def run_multi_server_example():
                 "args": [
                     "-y",
                     "@modelcontextprotocol/server-filesystem",
-                    "/home/pietro/projects/mcp-use/",
+                    "YOUR_DIRECTORY_HERE",
                 ],
             },
         }
