@@ -472,45 +472,32 @@ You can also build your own custom agent using the LangChain adapter:
 ```python
 import asyncio
 from langchain_openai import ChatOpenAI
-from langchain.agents import AgentExecutor, create_tool_calling_agent
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-
 from mcp_use.client import MCPClient
 from mcp_use.adapters.langchain_adapter import LangChainAdapter
 from dotenv import load_dotenv
 
 load_dotenv()
 
+
 async def main():
     # Initialize MCP client
     client = MCPClient.from_config_file("examples/browser_mcp.json")
+    llm = ChatOpenAI(model="gpt-4o")
 
     # Create adapter instance
     adapter = LangChainAdapter()
-
     # Get LangChain tools with a single line
     tools = await adapter.create_tools(client)
 
     # Create a custom LangChain agent
-    llm = ChatOpenAI(model="gpt-4o")
-    prompt = ChatPromptTemplate.from_messages(
-        [
-            ("system", "You are a helpful assistant with access to powerful tools."),
-            ("human", "{input}"),
-            MessagesPlaceholder(variable_name="agent_scratchpad"),
-        ]
-    )
-
-    agent = create_tool_calling_agent(llm=llm, tools=tools, prompt=prompt)
-    agent_executor = AgentExecutor(agent=agent, tools=tools)
-
-    # Run the agent
-    result = await agent_executor.ainvoke({"input": "What tools do you have avilable ? "})
+    llm_with_tools = llm.bind_tools(tools)
+    result = await llm_with_tools.ainvoke("What tools do you have avilable ? ")
     print(result)
 
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 ```
 
