@@ -571,7 +571,7 @@ This is useful when you only need to see the agent's steps and decision-making p
 
 # Contributing
 
-We love contributions! Feel free to open issues for bugs or feature requests.
+We love contributions! Feel free to open issues for bugs or feature requests. Look at [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 # Requirements
 
