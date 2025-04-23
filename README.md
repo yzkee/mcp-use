@@ -24,13 +24,13 @@
 
 | Feature | Description |
 |---------|-------------|
-| 🔄 **Ease of use** | Create your first MCP capable agent you need only 6 lines of code |
-| 🤖 **LLM Flexibility** | Works with any langchain supported LLM that supports tool calling (OpenAI, Anthropic, Groq, LLama etc.) |
-| 🌐 **HTTP Support** | Direct connection to MCP servers running on specific HTTP ports |
-| ⚙️ **Dynamic Server Selection** | Agents can dynamically choose the most appropriate MCP server for a given task from the available pool |
-| 🧩 **Multi-Server Support** | Use multiple MCP servers simultaneously in a single agent |
-| 🛡️ **Tool Restrictions** | Restrict potentially dangerous tools like file system or network access |
-| 🔧 **Custom Agents** | Build your own agents with any framework using the LangChain adapter or create new adapters |
+| 🔄 [**Ease of use**](#quick-start) | Create your first MCP capable agent you need only 6 lines of code |
+| 🤖 [**LLM Flexibility**](#installing-langchain-providers) | Works with any langchain supported LLM that supports tool calling (OpenAI, Anthropic, Groq, LLama etc.) |
+| 🌐 [**HTTP Support**](#http-connection-example) | Direct connection to MCP servers running on specific HTTP ports |
+| ⚙️ [**Dynamic Server Selection**](#dynamic-server-selection-server-manager) | Agents can dynamically choose the most appropriate MCP server for a given task from the available pool |
+| 🧩 [**Multi-Server Support**](#multi-server-support) | Use multiple MCP servers simultaneously in a single agent |
+| 🛡️ [**Tool Restrictions**](#tool-access-control) | Restrict potentially dangerous tools like file system or network access |
+| 🔧 [**Custom Agents**](#build-a-custom-agent) | Build your own agents with any framework using the LangChain adapter or create new adapters |
 
 
 # Quick start
