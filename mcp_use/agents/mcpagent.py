@@ -42,7 +42,6 @@ class MCPAgent:
         llm: BaseLanguageModel,
         client: MCPClient | None = None,
         connectors: list[BaseConnector] | None = None,
-        server_name: str | None = None,
         max_steps: int = 5,
         auto_initialize: bool = False,
         memory_enabled: bool = True,
@@ -59,7 +58,6 @@ class MCPAgent:
             llm: The LangChain LLM to use.
             client: The MCPClient to use. If provided, connector is ignored.
             connectors: A list of MCP connectors to use if client is not provided.
-            server_name: The name of the server to use if client is provided.
             max_steps: The maximum number of steps to take.
             auto_initialize: Whether to automatically initialize the agent when run is called.
             memory_enabled: Whether to maintain conversation history for context.
@@ -72,7 +70,6 @@ class MCPAgent:
         self.llm = llm
         self.client = client
         self.connectors = connectors or []
-        self.server_name = server_name
         self.max_steps = max_steps
         self.auto_initialize = auto_initialize
         self.memory_enabled = memory_enabled
