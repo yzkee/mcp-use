@@ -120,7 +120,8 @@ class MCPClient:
         # Get server config
         servers = self.config.get("mcpServers", {})
         if not servers:
-            raise ValueError("No MCP servers defined in config")
+            logger.warning("No MCP servers defined in config")
+            return None
 
         if server_name not in servers:
             raise ValueError(f"Server '{server_name}' not found in config")
@@ -158,7 +159,8 @@ class MCPClient:
         # Get server config
         servers = self.config.get("mcpServers", {})
         if not servers:
-            raise ValueError("No MCP servers defined in config")
+            logger.warning("No MCP servers defined in config")
+            return {}
 
         # Create sessions for all servers
         for name in servers:

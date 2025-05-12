@@ -15,6 +15,7 @@ from langchain.schema import AIMessage, BaseMessage, HumanMessage, SystemMessage
 from langchain.schema.language_model import BaseLanguageModel
 from langchain_core.agents import AgentAction, AgentFinish
 from langchain_core.exceptions import OutputParserException
+from langchain_core.runnables.schema import StreamEvent
 from langchain_core.tools import BaseTool
 from langchain_core.utils.input import get_color_mapping
 
@@ -311,7 +312,7 @@ class MCPAgent:
         max_steps: int | None = None,
         manage_connector: bool = True,
         external_history: list[BaseMessage] | None = None,
-    ) -> AsyncIterator[str]:
+    ) -> AsyncIterator[StreamEvent]:
         """Internal async generator yielding response chunks.
 
         The implementation purposefully keeps the logic compact:
@@ -352,7 +353,7 @@ class MCPAgent:
 
         # 3. Stream & diff -------------------------------------------------------
         accumulated = ""
-        async for event in self._agent_executor.astream(inputs):
+        async for event in self._agent_executor.astream_events(inputs):
             yield event
 
         # 4. Persist assistant message ------------------------------------------
