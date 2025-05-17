@@ -3,18 +3,30 @@
 </picture>
 
 <h1 align="center">Unified MCP Client Library </h1>
-
-[![](https://img.shields.io/pypi/dw/mcp_use.svg)](https://pypi.org/project/mcp_use/)
-[![PyPI Downloads](https://img.shields.io/pypi/dm/mcp_use.svg)](https://pypi.org/project/mcp_use/)
-[![PyPI Version](https://img.shields.io/pypi/v/mcp_use.svg)](https://pypi.org/project/mcp_use/)
-[![Python Versions](https://img.shields.io/pypi/pyversions/mcp_use.svg)](https://pypi.org/project/mcp_use/)
-[![Documentation](https://img.shields.io/badge/docs-mcp--use.io-blue)](https://docs.mcp-use.io)
-[![Website](https://img.shields.io/badge/website-mcp--use.io-blue)](https://mcp-use.io)
-[![License](https://img.shields.io/github/license/pietrozullo/mcp-use)](https://github.com/pietrozullo/mcp-use/blob/main/LICENSE)
-[![Code style: Ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
-[![GitHub stars](https://img.shields.io/github/stars/pietrozullo/mcp-use?style=social)](https://github.com/pietrozullo/mcp-use/stargazers)
-[![Twitter Follow](https://img.shields.io/twitter/follow/Pietro?style=social)](https://x.com/pietrozullo)
-
+<p align="center">
+    <a href="https://pypi.org/project/mcp_use/" alt="PyPI Version">
+        <img src="https://img.shields.io/pypi/v/mcp_use.svg"/></a>
+    <a href="https://pypi.org/project/mcp_use/" alt="PyPI Downloads">
+        <img src="https://static.pepy.tech/badge/mcp-use" /></a>
+    <a href="https://pypi.org/project/mcp_use/" alt="Python Versions">
+        <img src="https://img.shields.io/pypi/pyversions/mcp_use.svg" /></a>
+    <a href="https://docs.mcp-use.io" alt="Documentation">
+        <img src="https://img.shields.io/badge/docs-mcp--use.io-blue" /></a>
+    <a href="https://mcp-use.io" alt="Website">
+        <img src="https://img.shields.io/badge/website-mcp--use.io-blue" /></a>
+    <a href="https://github.com/pietrozullo/mcp-use/blob/main/LICENSE" alt="License">
+        <img src="https://img.shields.io/github/license/pietrozullo/mcp-use" /></a>
+    <a href="https://github.com/astral-sh/ruff" alt="Code style: Ruff">
+        <img src="https://img.shields.io/badge/code%20style-ruff-000000.svg" /></a>
+    <a href="https://github.com/pietrozullo/mcp-use/stargazers" alt="GitHub stars">
+        <img src="https://img.shields.io/github/stars/pietrozullo/mcp-use?style=social" /></a>
+    </p>
+    <p align="center">
+    <a href="https://x.com/pietrozullo" alt="Twitter Follow">
+        <img src="https://img.shields.io/twitter/follow/Pietro?style=social" /></a>
+    <a href="https://discord.gg/XkNkSkMz3V" alt="Discord">
+        <img src="https://dcbadge.limes.pink/api/server/https://discord.gg/XkNkSkMz3V?style=flat" /></a>
+</p>
 🌐 MCP-Use is the open source way to connect **any LLM to any MCP server** and build custom agents that have tool access, without using closed source or application clients.
 
 💡 Let developers easily connect any LLM to tools like web browsing, file operations, and more.
