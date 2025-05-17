@@ -1,6 +1,8 @@
-<picture>
-  <img alt="" src="./static/image.jpg"  width="full">
-</picture>
+<div align="center" style="margin: 50px 0;">
+  <picture>
+    <img alt="MCP-Use Logo" src="static/image.svg?sanitize=true" width="70%">
+  </picture>
+</div>
 
 <h1 align="center">Unified MCP Client Library </h1>
 <p align="center">
