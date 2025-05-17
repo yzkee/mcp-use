@@ -1,8 +1,6 @@
-<div align="center" style="margin: 50px 0;">
-  <picture>
-    <img alt="MCP-Use Logo" src="static/image.svg?sanitize=true" width="70%">
-  </picture>
-</div>
+<p align="center">
+    <img alt="MCP-Use Logo" src="static/image.svg?sanitize=true" width="70%" style="margin:20px auto;">
+</p>
 
 <h1 align="center">Unified MCP Client Library </h1>
 <p align="center">
