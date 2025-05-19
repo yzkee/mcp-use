@@ -40,17 +40,48 @@
 # Features
 
 ## ✨ Key Features
-
-| Feature                                                                     | Description                                                                                                         |
-| --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| 🔄 [**Ease of use**](#quick-start)                                          | Create your first MCP capable agent you need only 6 lines of code                                                   |
-| 🤖 [**LLM Flexibility**](#installing-langchain-providers)                   | Works with any langchain supported LLM that supports tool calling (OpenAI, Anthropic, Groq, LLama etc.)             |
-| 🌐 [**Code Builder**](https://mcp-use.io/builder)                           | Explore MCP capabilities and generate starter code with the interactive [code builder](https://mcp-use.io/builder). |
-| 🔗 [**HTTP Support**](#http-connection-example)                             | Direct connection to MCP servers running on specific HTTP ports                                                     |
-| ⚙️ [**Dynamic Server Selection**](#dynamic-server-selection-server-manager) | Agents can dynamically choose the most appropriate MCP server for a given task from the available pool              |
-| 🧩 [**Multi-Server Support**](#multi-server-support)                        | Use multiple MCP servers simultaneously in a single agent                                                           |
-| 🛡️ [**Tool Restrictions**](#tool-access-control)                            | Restrict potentially dangerous tools like file system or network access                                             |
-| 🔧 [**Custom Agents**](#build-a-custom-agent)                               | Build your own agents with any framework using the LangChain adapter or create new adapters                         |
+<table>
+  <tr>
+    <th width="400">Feature</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>🔄 <a href="#quick-start"><strong>Ease of use</strong></a></td>
+    <td>Create your first MCP capable agent you need only 6 lines of code</td>
+  </tr>
+  <tr>
+    <td>🤖 <a href="#installing-langchain-providers"><strong>LLM Flexibility</strong></a></td>
+    <td>Works with any langchain supported LLM that supports tool calling (OpenAI, Anthropic, Groq, LLama etc.)</td>
+  </tr>
+  <tr>
+    <td>🌐 <a href="https://mcp-use.io/builder"><strong>Code Builder</strong></a></td>
+    <td>Explore MCP capabilities and generate starter code with the interactive <a href="https://mcp-use.io/builder">code builder</a>.</td>
+  </tr>
+  <tr>
+    <td>🔗 <a href="#http-connection-example"><strong>HTTP Support</strong></a></td>
+    <td>Direct connection to MCP servers running on specific HTTP ports</td>
+  </tr>
+  <tr>
+    <td>⚙️ <a href="#dynamic-server-selection-server-manager"><strong>Dynamic Server Selection</strong></a></td>
+    <td>Agents can dynamically choose the most appropriate MCP server for a given task from the available pool</td>
+  </tr>
+  <tr>
+    <td>🧩 <a href="#multi-server-support"><strong>Multi-Server Support</strong></a></td>
+    <td>Use multiple MCP servers simultaneously in a single agent</td>
+  </tr>
+  <tr>
+    <td>🛡️ <a href="#tool-access-control"><strong>Tool Restrictions</strong></a></td>
+    <td>Restrict potentially dangerous tools like file system or network access</td>
+  </tr>
+  <tr>
+    <td>🔧 <a href="#build-a-custom-agent"><strong>Custom Agents</strong></a></td>
+    <td>Build your own agents with any framework using the LangChain adapter or create new adapters</td>
+  </tr>
+  <tr>
+    <td>❓ <a href="https://mcp-use.io/what-should-we-build-next"><strong>What should we build next</strong></a></td>
+    <td>Let us know what you'd like us to build next</td>
+  </tr>
+</table>
 
 # Quick start
 
