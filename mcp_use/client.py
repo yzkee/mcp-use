@@ -146,16 +146,16 @@ class MCPClient:
         self,
         auto_initialize: bool = True,
     ) -> dict[str, MCPSession]:
-        """Create a session for the specified server.
+        """Create sessions for all configured servers.
 
         Args:
-            auto_initialize: Whether to automatically initialize the session.
+            auto_initialize: Whether to automatically initialize the sessions.
 
         Returns:
-            The created MCPSession. If server_name is None, returns the first created session.
+            Dictionary mapping server names to their MCPSession instances.
 
         Warns:
-            Warning: If no servers are configured.
+            UserWarning: If no servers are configured.
         """
         # Get server config
         servers = self.config.get("mcpServers", {})
