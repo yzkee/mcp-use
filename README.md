@@ -35,6 +35,8 @@
 </p>
 🌐 MCP-Use is the open source way to connect **any LLM to any MCP server** and build custom agents that have tool access, without using closed source or application clients.
 
+💬 Get started quickly - chat with your servers on our <b>hosted version</b>! <b>[Try mcp-use chat *(beta)* ](https://chat.mcp-use.io)</b>.
+
 💡 Let developers easily connect any LLM to tools like web browsing, file operations, and more.
 
 # Features
