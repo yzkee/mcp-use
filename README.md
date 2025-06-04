@@ -732,14 +732,6 @@ agent = MCPAgent(
 
 This is useful when you only need to see the agent's steps and decision-making process without all the low-level debug information from other components.
 
-# Roadmap
-
-<ul>
-<li>[x] Multiple Servers at once </li>
-<li>[x] Test remote connectors (http, ws)</li>
-<li>[ ] ... </li>
-</ul>
-
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=pietrozullo/mcp-use&type=Date)](https://www.star-history.com/#pietrozullo/mcp-use&Date)
@@ -748,12 +740,77 @@ This is useful when you only need to see the agent's steps and decision-making p
 
 We love contributions! Feel free to open issues for bugs or feature requests. Look at [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
+## Contributors
+
+Thanks to all our amazing contributors!
+
+<a href="https://github.com/mcp-use/mcp-use/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=mcp-use/mcp-use" />
+</a>
+
+
+## Top Starred Dependents
+
+<!-- gh-dependents-info-used-by-start -->
+
+<table>
+  <tr>
+    <th width="400">Repository</th>
+    <th>Stars</th>
+  </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/170207473?s=40&v=4" width="20" height="20" style="vertical-align: middle; margin-right: 8px;"> <a href="https://github.com/tavily-ai/meeting-prep-agent"><strong>tavily-ai/meeting-prep-agent</strong></a></td>
+    <td>⭐ 112</td>
+  </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/20041231?s=40&v=4" width="20" height="20" style="vertical-align: middle; margin-right: 8px;"> <a href="https://github.com/krishnaik06/MCP-CRASH-Course"><strong>krishnaik06/MCP-CRASH-Course</strong></a></td>
+    <td>⭐ 37</td>
+  </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/892404?s=40&v=4" width="20" height="20" style="vertical-align: middle; margin-right: 8px;"> <a href="https://github.com/truemagic-coder/solana-agent-app"><strong>truemagic-coder/solana-agent-app</strong></a></td>
+    <td>⭐ 29</td>
+  </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/8344498?s=40&v=4" width="20" height="20" style="vertical-align: middle; margin-right: 8px;"> <a href="https://github.com/schogini/techietalksai"><strong>schogini/techietalksai</strong></a></td>
+    <td>⭐ 21</td>
+  </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/201161342?s=40&v=4" width="20" height="20" style="vertical-align: middle; margin-right: 8px;"> <a href="https://github.com/autometa-dev/whatsapp-mcp-voice-agent"><strong>autometa-dev/whatsapp-mcp-voice-agent</strong></a></td>
+    <td>⭐ 18</td>
+  </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/100749943?s=40&v=4" width="20" height="20" style="vertical-align: middle; margin-right: 8px;"> <a href="https://github.com/Deniscartin/mcp-cli"><strong>Deniscartin/mcp-cli</strong></a></td>
+    <td>⭐ 17</td>
+  </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/6764390?s=40&v=4" width="20" height="20" style="vertical-align: middle; margin-right: 8px;"> <a href="https://github.com/elastic/genai-workshops"><strong>elastic/genai-workshops</strong></a></td>
+    <td>⭐ 9</td>
+  </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/6688805?s=40&v=4" width="20" height="20" style="vertical-align: middle; margin-right: 8px;"> <a href="https://github.com/innovaccer/Healthcare-MCP"><strong>innovaccer/Healthcare-MCP</strong></a></td>
+    <td>⭐ 6</td>
+  </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/205593730?s=40&v=4" width="20" height="20" style="vertical-align: middle; margin-right: 8px;"> <a href="https://github.com/Qingyon-AI/Revornix"><strong>Qingyon-AI/Revornix</strong></a></td>
+    <td>⭐ 5</td>
+  </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/68845761?s=40&v=4" width="20" height="20" style="vertical-align: middle; margin-right: 8px;"> <a href="https://github.com/entbappy/MCP-Tutorials"><strong>entbappy/MCP-Tutorials</strong></a></td>
+    <td>⭐ 5</td>
+  </tr>
+</table>
+
+<!-- gh-dependents-info-used-by-end -->
+
 # Requirements
 
 - Python 3.11+
 - MCP implementation (like Playwright MCP)
 - LangChain and appropriate model libraries (OpenAI, Anthropic, etc.)
 
+# License
+
+MIT
 # Citation
 
 If you use MCP-Use in your research or project, please cite:
@@ -767,7 +824,3 @@ If you use MCP-Use in your research or project, please cite:
   url = {https://github.com/pietrozullo/mcp-use}
 }
 ```
-
-# License
-
-MIT
