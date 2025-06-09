@@ -41,7 +41,7 @@ class TestMCPSessionConnection(IsolatedAsyncioTestCase):
         self.connector.disconnect = AsyncMock()
 
         # By default, the connector is not connected
-        type(self.connector).client = PropertyMock(return_value=None)
+        type(self.connector).client_session = PropertyMock(return_value=None)
 
         self.session = MCPSession(self.connector)
 
@@ -69,7 +69,7 @@ class TestMCPSessionConnection(IsolatedAsyncioTestCase):
         self.assertFalse(self.session.is_connected)
 
         # Test when connected
-        type(self.connector).client = PropertyMock(return_value=MagicMock())
+        type(self.connector).client_session = PropertyMock(return_value=MagicMock())
         self.assertTrue(self.session.is_connected)
 
 
@@ -84,7 +84,7 @@ class TestMCPSessionOperations(IsolatedAsyncioTestCase):
         self.connector.initialize = AsyncMock(return_value={"session_id": "test_session"})
 
         # By default, the connector is not connected
-        type(self.connector).client = PropertyMock(return_value=None)
+        type(self.connector).client_session = PropertyMock(return_value=None)
 
         self.session = MCPSession(self.connector)
 
@@ -104,7 +104,7 @@ class TestMCPSessionOperations(IsolatedAsyncioTestCase):
     async def test_initialize_already_connected(self):
         """Test initializing the session when already connected."""
         # Set up the connector to indicate it's already connected
-        type(self.connector).client = PropertyMock(return_value=MagicMock())
+        type(self.connector).client_session = PropertyMock(return_value=MagicMock())
 
         # Test initialization when already connected
         await self.session.initialize()

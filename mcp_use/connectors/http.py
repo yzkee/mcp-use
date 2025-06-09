@@ -51,8 +51,8 @@ class HttpConnector(BaseConnector):
 
         self._connection_manager = connection_manager
         read_stream, write_stream = await self._connection_manager.start()
-        self.client = ClientSession(read_stream, write_stream, sampling_callback=None)
-        await self.client.__aenter__()
+        self.client_session = ClientSession(read_stream, write_stream, sampling_callback=None)
+        await self.client_session.__aenter__()
 
     async def connect(self) -> None:
         """Establish a connection to the MCP implementation."""
@@ -85,7 +85,7 @@ class HttpConnector(BaseConnector):
 
                 # If we get here, streamable HTTP works
 
-                self.client = test_client
+                self.client_session = test_client
                 transport_type = "streamable HTTP"
 
             except Exception as init_error:
@@ -131,8 +131,10 @@ class HttpConnector(BaseConnector):
                     read_stream, write_stream = await connection_manager.start()
 
                     # Create the client session for SSE
-                    self.client = ClientSession(read_stream, write_stream, sampling_callback=None)
-                    await self.client.__aenter__()
+                    self.client_session = ClientSession(
+                        read_stream, write_stream, sampling_callback=None
+                    )
+                    await self.client_session.__aenter__()
                     transport_type = "SSE"
 
                 except Exception as sse_error:

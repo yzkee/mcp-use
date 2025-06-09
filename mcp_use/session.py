@@ -81,4 +81,4 @@ class MCPSession:
         Returns:
             True if the connector is connected, False otherwise.
         """
-        return hasattr(self.connector, "client") and self.connector.client is not None
+        return hasattr(self.connector, "client") and self.connector.client_session is not None
