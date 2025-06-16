@@ -6,18 +6,6 @@ mode: "custom"
 ---
 
 
-export const HeroCard = ({ filename, title, description, href }) => {
-  return (
-    <a className="group cursor-pointer pb-8" href={href}>
-      <img src={`/images/${filename}-light.png`} className="block dark:hidden pointer-events-none group-hover:scale-105 transition-all duration-100" />
-      <img src={`/images/${filename}-dark.png`} className="pointer-events-none group-hover:scale-105 transition-all duration-100 hidden dark:block" />
-      <h3 className="mt-5 text-gray-900 dark:text-zinc-50 font-medium">{title}</h3>
-      <span className="mt-1.5">
-        {description}
-      </span>
-    </a>
-  )
-}
 
 <div className="absolute inset-0 z-[-10]">
   <img
@@ -50,13 +38,41 @@ The open source MCP client library. Connect any LLM to any MCP server.
 </p>
 
 <div className="px-6 lg:px-0 mt-12 lg:mt-24 grid sm:grid-cols-2 gap-x-6 gap-y-4">
-<HeroCard filename="quickstart" title="Quick Start" description="Get up and running in minutes with our step-by-step guide" href="/quickstart" />
+<a className="group cursor-pointer pb-8" href="/quickstart">
+  <img src="/images/quickstart-light.png" className="block dark:hidden pointer-events-none group-hover:scale-105 transition-all duration-100" />
+  <img src="/images/quickstart-dark.png" className="pointer-events-none group-hover:scale-105 transition-all duration-100 hidden dark:block" />
+  <h3 className="mt-5 text-gray-900 dark:text-zinc-50 font-medium">Quick Start</h3>
+  <span className="mt-1.5">
+    Get up and running in minutes with our step-by-step guide
+  </span>
+</a>
 
-<HeroCard filename="installation" title="Installation" description="Install mcp_use and set up your development environment" href="/installation" />
+<a className="group cursor-pointer pb-8" href="/installation">
+  <img src="/images/installation-light.png" className="block dark:hidden pointer-events-none group-hover:scale-105 transition-all duration-100" />
+  <img src="/images/installation-dark.png" className="pointer-events-none group-hover:scale-105 transition-all duration-100 hidden dark:block" />
+  <h3 className="mt-5 text-gray-900 dark:text-zinc-50 font-medium">Installation</h3>
+  <span className="mt-1.5">
+    Install mcp_use and set up your development environment
+  </span>
+</a>
 
-<HeroCard filename="configuration" title="Configuration" description="Learn how to configure MCP servers and LLM providers" href="/essentials/configuration" />
+<a className="group cursor-pointer pb-8" href="/essentials/configuration">
+  <img src="/images/configuration-light.png" className="block dark:hidden pointer-events-none group-hover:scale-105 transition-all duration-100" />
+  <img src="/images/configuration-dark.png" className="pointer-events-none group-hover:scale-105 transition-all duration-100 hidden dark:block" />
+  <h3 className="mt-5 text-gray-900 dark:text-zinc-50 font-medium">Configuration</h3>
+  <span className="mt-1.5">
+    Learn how to configure MCP servers and LLM providers
+  </span>
+</a>
 
-<HeroCard filename="examples" title="Examples" description="Explore real-world examples and advanced use cases" href="https://github.com/mcp-use/mcp-use/tree/main/examples" />
+<a className="group cursor-pointer pb-8" href="https://github.com/mcp-use/mcp-use/tree/main/examples">
+  <img src="/images/examples-light.png" className="block dark:hidden pointer-events-none group-hover:scale-105 transition-all duration-100" />
+  <img src="/images/examples-dark.png" className="pointer-events-none group-hover:scale-105 transition-all duration-100 hidden dark:block" />
+  <h3 className="mt-5 text-gray-900 dark:text-zinc-50 font-medium">Examples</h3>
+  <span className="mt-1.5">
+    Explore real-world examples and advanced use cases
+  </span>
+</a>
 
 </div>
 
