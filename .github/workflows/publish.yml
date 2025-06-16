@@ -72,7 +72,7 @@ jobs:
           name: Release v${{ steps.check-version.outputs.new_version }}
           draft: false
           prerelease: false
-          generateReleaseNotes: true
+          generateReleaseNotes: false
 
       - name: Update Docs Changelog
         if: steps.check-version.outputs.is_new_version == 'true'
