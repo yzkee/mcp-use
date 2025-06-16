@@ -12,11 +12,10 @@
     "library": "lucide"
   },
   "navigation": {
-    "dropdowns": [
+    "tabs": [
       {
-        "dropdown": "Documentation",
+        "tab": "Documentation",
         "icon": "book",
-        "description": "Complete guide to using mcp_use",
         "groups": [
           {
             "group": "Getting Started",
@@ -70,9 +69,8 @@
         ]
       },
       {
-        "dropdown": "API Reference",
+        "tab": "API Reference",
         "icon": "terminal",
-        "description": "Complete API documentation",
         "groups": [
           {
             "group": "API Reference",
@@ -86,9 +84,8 @@
         ]
       },
       {
-        "dropdown": "Changelog",
+        "tab": "Changelog",
         "icon": "history",
-        "description": "Updates and changes",
         "groups": [
           {
             "group": "Changelog",
