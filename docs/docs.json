@@ -84,6 +84,18 @@
         ]
       },
       {
+        "tab": "Community",
+        "icon": "users",
+        "groups": [
+          {
+            "group": "Community",
+            "pages": [
+              "community/showcase"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Changelog",
         "icon": "history",
         "groups": [
