@@ -351,9 +351,12 @@ class MCPAgent:
                         if not isinstance(message, ToolAgentAction):
                             self.add_to_history(message)
             yield event
-
         # 5. House-keeping -------------------------------------------------------
-        if initialised_here and manage_connector:
+        # Restrict agent cleanup in _generate_response_chunks_async to only occur
+        #  when the agent was initialized in this generator and is not client-managed
+        #  and the user does want us to manage the connection.
+        if not self.client and initialised_here and manage_connector:
+            logger.info("🧹 Closing agent after generator completion")
             await self.close()
 
     async def astream(
@@ -508,7 +511,7 @@ class MCPAgent:
 
                     if current_tool_names != existing_tool_names:
                         logger.info(
-                            f"🔄 Tools changed before step {step_num + 1}, updating agent. "
+                            f"🔄 Tools changed before step {step_num + 1}, updating agent."
                             f"New tools: {', '.join(current_tool_names)}"
                         )
                         self._tools = current_tools
