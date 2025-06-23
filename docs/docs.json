@@ -55,7 +55,8 @@
             "group": "Development",
             "pages": [
               "development",
-              "development/telemetry"
+              "development/telemetry",
+              "development/observability"
             ]
           },
           {
