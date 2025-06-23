@@ -71,6 +71,7 @@ jobs:
           draft: false
           prerelease: false
           generateReleaseNotes: false
+          omitBodyDuringUpdate: true
 
       - name: Publish to PyPI
         if: steps.check-version.outputs.is_new_version == 'true'
