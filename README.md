@@ -14,9 +14,9 @@
         <img src="https://static.pepy.tech/badge/mcp-use" /></a>
     <a href="https://pypi.org/project/mcp_use/" alt="Python Versions">
         <img src="https://img.shields.io/pypi/pyversions/mcp_use.svg" /></a>
-    <a href="https://docs.mcp-use.io" alt="Documentation">
+    <a href="https://docs.mcp-use.com" alt="Documentation">
         <img src="https://img.shields.io/badge/docs-mcp--use.io-blue" /></a>
-    <a href="https://mcp-use.io" alt="Website">
+    <a href="https://mcp-use.com" alt="Website">
         <img src="https://img.shields.io/badge/website-mcp--use.io-blue" /></a>
     <a href="https://github.com/pietrozullo/mcp-use/blob/main/LICENSE" alt="License">
         <img src="https://img.shields.io/github/license/pietrozullo/mcp-use" /></a>
@@ -35,7 +35,7 @@
 </p>
 🌐 MCP-Use is the open source way to connect **any LLM to any MCP server** and build custom agents that have tool access, without using closed source or application clients.
 
-💬 Get started quickly - chat with your servers on our <b>hosted version</b>! <b>[Try mcp-use chat *(beta)* ](https://chat.mcp-use.io)</b>.
+💬 Get started quickly - chat with your servers on our <b>hosted version</b>! <b>[Try mcp-use chat *(beta)* ](https://chat.mcp-use.com)</b>.
 
 💡 Let developers easily connect any LLM to tools like web browsing, file operations, and more.
 
@@ -56,8 +56,8 @@
     <td>Works with any langchain supported LLM that supports tool calling (OpenAI, Anthropic, Groq, LLama etc.)</td>
   </tr>
   <tr>
-    <td>🌐 <a href="https://mcp-use.io/builder"><strong>Code Builder</strong></a></td>
-    <td>Explore MCP capabilities and generate starter code with the interactive <a href="https://mcp-use.io/builder">code builder</a>.</td>
+    <td>🌐 <a href="https://mcp-use.com/builder"><strong>Code Builder</strong></a></td>
+    <td>Explore MCP capabilities and generate starter code with the interactive <a href="https://mcp-use.com/builder">code builder</a>.</td>
   </tr>
   <tr>
     <td>🔗 <a href="#http-connection-example"><strong>HTTP Support</strong></a></td>
@@ -80,7 +80,7 @@
     <td>Build your own agents with any framework using the LangChain adapter or create new adapters</td>
   </tr>
   <tr>
-    <td>❓ <a href="https://mcp-use.io/what-should-we-build-next"><strong>What should we build next</strong></a></td>
+    <td>❓ <a href="https://mcp-use.com/what-should-we-build-next"><strong>What should we build next</strong></a></td>
     <td>Let us know what you'd like us to build next</td>
   </tr>
 </table>
