@@ -1,3 +1,5 @@
+<style>h1, h2,h3,h4 { border-bottom: 0; } </style>
+<div align="center">
 <div align="center" style="margin: 0 auto; max-width: 80%;">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="static/logo_white.svg">
@@ -6,24 +8,23 @@
   </picture>
 </div>
 
-<h1 align="center">Unified MCP Client Library </h1>
+<br>
+
+# Connect any LLM to any MCP server
+
 <p align="center">
-    <a href="https://pypi.org/project/mcp_use/" alt="PyPI Version">
-        <img src="https://img.shields.io/pypi/v/mcp_use.svg"/></a>
-    <a href="https://pypi.org/project/mcp_use/" alt="PyPI Downloads">
-        <img src="https://static.pepy.tech/badge/mcp-use" /></a>
-    <a href="https://pypi.org/project/mcp_use/" alt="Python Versions">
-        <img src="https://img.shields.io/pypi/pyversions/mcp_use.svg" /></a>
-    <a href="https://docs.mcp-use.com" alt="Documentation">
-        <img src="https://img.shields.io/badge/docs-mcp--use.io-blue" /></a>
-    <a href="https://mcp-use.com" alt="Website">
-        <img src="https://img.shields.io/badge/website-mcp--use.io-blue" /></a>
-    <a href="https://github.com/pietrozullo/mcp-use/blob/main/LICENSE" alt="License">
-        <img src="https://img.shields.io/github/license/pietrozullo/mcp-use" /></a>
-    <a href="https://github.com/astral-sh/ruff" alt="Code style: Ruff">
-        <img src="https://img.shields.io/badge/code%20style-ruff-000000.svg" /></a>
     <a href="https://github.com/pietrozullo/mcp-use/stargazers" alt="GitHub stars">
         <img src="https://img.shields.io/github/stars/pietrozullo/mcp-use?style=social" /></a>
+    <a href="https://pypi.org/project/mcp_use/" alt="PyPI Version">
+        <img src="https://img.shields.io/pypi/v/mcp_use.svg"/></a>
+    <a href="https://github.com/pietrozullo/mcp-use/blob/main/LICENSE" alt="License">
+        <img src="https://img.shields.io/github/license/pietrozullo/mcp-use" /></a>
+    <a href="https://pypi.org/project/mcp_use/" alt="PyPI Downloads">
+        <img src="https://static.pepy.tech/badge/mcp-use" /></a>
+    <a href="https://docs.mcp-use.com" alt="Documentation">
+        <img src="https://img.shields.io/badge/docs-mcp--use.com-blue" /></a>
+    <a href="https://mcp-use.com" alt="Website">
+        <img src="https://img.shields.io/badge/website-mcp--use.com-blue" /></a>
     </p>
     <p align="center">
     <a href="https://x.com/pietrozullo" alt="Twitter Follow - Pietro">
@@ -33,15 +34,19 @@
     <a href="https://discord.gg/XkNkSkMz3V" alt="Discord">
         <img src="https://dcbadge.limes.pink/api/server/XkNkSkMz3V?style=flat" /></a>
 </p>
-🌐 MCP-Use is the open source way to connect **any LLM to any MCP server** and build custom agents that have tool access, without using closed source or application clients.
+</div>
 
-💬 Get started quickly - chat with your servers on our <b>hosted version</b>! <b>[Try mcp-use chat *(beta)* ](https://chat.mcp-use.com)</b>.
+🌐 MCP-Use is the open source way to connect **any LLM to any MCP server** and build custom MCP agents that have tool access, without using closed source or application clients.
 
 💡 Let developers easily connect any LLM to tools like web browsing, file operations, and more.
 
+- Visit the [mcp-use.com website](https://mcp-use.com/) to know how to build and deploy MCP agents.
+- Visit the [mcp-use docs](https://docs.mcp-use.com/) to get started with mcp-use libraryò
+
+💬 Get started quickly - chat with your servers on our <b>hosted version</b>! [Try mcp-use chat (beta)](https://chat.mcp-use.com).
+
 # Features
 
-## ✨ Key Features
 <table>
   <tr>
     <th width="400">Feature</th>
@@ -112,6 +117,7 @@ pip install langchain-openai
 # For Anthropic
 pip install langchain-anthropic
 ```
+
 For other providers, check the [LangChain chat models documentation](https://python.langchain.com/docs/integrations/chat/) and add your API keys for the provider you want to use to your `.env` file.
 
 ```bash
@@ -748,7 +754,6 @@ Thanks to all our amazing contributors!
   <img src="https://contrib.rocks/image?repo=mcp-use/mcp-use" />
 </a>
 
-
 ## Top Starred Dependents
 
 <!-- gh-dependents-info-used-by-start -->
@@ -811,6 +816,7 @@ Thanks to all our amazing contributors!
 # License
 
 MIT
+
 # Citation
 
 If you use MCP-Use in your research or project, please cite:
@@ -824,3 +830,5 @@ If you use MCP-Use in your research or project, please cite:
   url = {https://github.com/pietrozullo/mcp-use}
 }
 ```
+
+<img referrerpolicy="no-referrer-when-downgrade" src="https://static.scarf.sh/a.png?x-pxid=732589b6-6850-4b8c-aa25-906c0979e426&page=README.md" />
