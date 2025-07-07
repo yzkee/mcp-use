@@ -589,6 +589,10 @@ class MCPAgent:
         success = True
         start_time = time.time()
         generator = self.stream(query, max_steps, manage_connector, external_history, track_execution=False)
+        error = None
+        steps_taken = 0
+        tools_used_names = []
+        result = None
         try:
             result, steps_taken, tools_used_names = await self._consume_and_return(generator)
         except Exception as e:
