@@ -1,14 +1,15 @@
 name: Transports
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_run:
+    workflows: ["Lint"]
+    types:
+      - completed
 
 jobs:
   transports:
     name: "${{ matrix.transport }}"
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       fail-fast: false
       matrix:
@@ -31,10 +32,6 @@ jobs:
         run: |
           # Install project with dev and optional extras similar to unit tests environment
           uv pip install --system .[dev,anthropic,openai,search,e2b]
-
-      - name: Lint with ruff
-        run: |
-          ruff check .
 
       - name: Run integration tests for ${{ matrix.transport }} transport
         run: |
