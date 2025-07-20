@@ -61,17 +61,27 @@ jobs:
         run: |
           python -m build
 
-      - name: Create Release
+      - name: Find and Publish Draft Release
         if: steps.check-version.outputs.is_new_version == 'true'
-        id: create_release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: v${{ steps.check-version.outputs.new_version }}
-          name: Release v${{ steps.check-version.outputs.new_version }}
-          draft: false
-          prerelease: false
-          generateReleaseNotes: false
-          omitBodyDuringUpdate: true
+        id: publish_release
+        run: |
+          # Find the draft release for this version
+          RELEASE_ID=$(gh release list --json id,name,isDraft --jq '.[] | select(.name | contains("v${{ steps.check-version.outputs.new_version }}")) | select(.isDraft == true) | .id')
+
+          if [ -n "$RELEASE_ID" ]; then
+            echo "Found draft release with ID: $RELEASE_ID"
+            # Edit the existing draft to make it published
+            gh release edit "v${{ steps.check-version.outputs.new_version }}" --draft=false
+            echo "Published existing draft release"
+          else
+            echo "No draft release found, creating new release"
+            # Fallback: create new release (though this shouldn't happen if release-drafter is working)
+            gh release create "v${{ steps.check-version.outputs.new_version }}" \
+              --title "Release v${{ steps.check-version.outputs.new_version }}" \
+              --generate-notes
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to PyPI
         if: steps.check-version.outputs.is_new_version == 'true'
