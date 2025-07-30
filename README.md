@@ -41,8 +41,7 @@
 
 - Visit the [mcp-use.com website](https://mcp-use.com/) to know how to build and deploy MCP agents.
 - Visit the [mcp-use docs](https://docs.mcp-use.com/) to get started with mcp-use library
-
-💬 Get started quickly - chat with your servers on our <b>hosted version</b>! [Try mcp-use chat (beta)](https://chat.mcp-use.com).
+- For the TypeScript version, visit [mcp-use-ts](https://github.com/pietrozullo/mcp-use-ts)
 
 | Supports  | |
 | :--- | :--- |
