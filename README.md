@@ -39,9 +39,9 @@
 
 💡 Let developers easily connect any LLM to tools like web browsing, file operations, and more.
 
-- Visit the [mcp-use.com website](https://mcp-use.com/) to know how to build and deploy MCP agents.
+- If you want to get started quickly check out [mcp-use.com website](https://mcp-use.com/) to build and deploy agents with your favorite MCP servers.
 - Visit the [mcp-use docs](https://docs.mcp-use.com/) to get started with mcp-use library
-- For the TypeScript version, visit [mcp-use-ts](https://github.com/pietrozullo/mcp-use-ts)
+- For the TypeScript version, visit [mcp-use-ts](https://github.com/mcp-use/mcp-use-ts)
 
 | Supports  | |
 | :--- | :--- |
