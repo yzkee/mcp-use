@@ -33,6 +33,7 @@ from ..logging import logger
 from ..managers.server_manager import ServerManager
 from .prompts.system_prompt_builder import create_system_message
 from .prompts.templates import DEFAULT_SYSTEM_PROMPT_TEMPLATE, SERVER_MANAGER_SYSTEM_PROMPT_TEMPLATE
+from .remote import RemoteAgent
 
 set_debug(logger.level == logging.DEBUG)
 
@@ -49,7 +50,7 @@ class MCPAgent:
 
     def __init__(
         self,
-        llm: BaseLanguageModel,
+        llm: BaseLanguageModel | None = None,
         client: MCPClient | None = None,
         connectors: list[BaseConnector] | None = None,
         max_steps: int = 5,
@@ -62,11 +63,14 @@ class MCPAgent:
         tools_used_names: list[str] | None = None,
         use_server_manager: bool = False,
         verbose: bool = False,
+        agent_id: str | None = None,
+        api_key: str | None = None,
+        base_url: str = "https://cloud.mcp-use.com",
     ):
         """Initialize a new MCPAgent instance.
 
         Args:
-            llm: The LangChain LLM to use.
+            llm: The LangChain LLM to use. Not required if agent_id is provided for remote execution.
             client: The MCPClient to use. If provided, connector is ignored.
             connectors: A list of MCP connectors to use if client is not provided.
             max_steps: The maximum number of steps to take.
@@ -77,7 +81,23 @@ class MCPAgent:
             additional_instructions: Extra instructions to append to the system prompt.
             disallowed_tools: List of tool names that should not be available to the agent.
             use_server_manager: Whether to use server manager mode instead of exposing all tools.
+            agent_id: Remote agent ID for remote execution. If provided, creates a remote agent.
+            api_key: API key for remote execution. If None, checks MCP_USE_API_KEY env var.
+            base_url: Base URL for remote API calls.
         """
+        # Handle remote execution
+        if agent_id is not None:
+            self._remote_agent = RemoteAgent(agent_id=agent_id, api_key=api_key, base_url=base_url)
+            self._is_remote = True
+            return
+
+        self._is_remote = False
+        self._remote_agent = None
+
+        # Validate requirements for local execution
+        if llm is None:
+            raise ValueError("llm is required for local execution. For remote execution, provide agent_id instead.")
+
         self.llm = llm
         self.client = client
         self.connectors = connectors or []
@@ -371,6 +391,14 @@ class MCPAgent:
             Intermediate steps as (AgentAction, str) tuples, followed by the final result.
             If output_schema is provided, yields structured output as instance of the schema.
         """
+        # Delegate to remote agent if in remote mode
+        if self._is_remote and self._remote_agent:
+            async for item in self._remote_agent.stream(
+                query, max_steps, manage_connector, external_history, track_execution, output_schema
+            ):
+                yield item
+            return
+
         result = ""
         initialized_here = False
         start_time = time.time()
@@ -708,6 +736,10 @@ class MCPAgent:
             )
             ```
         """
+        # Delegate to remote agent if in remote mode
+        if self._is_remote and self._remote_agent:
+            return await self._remote_agent.run(query, max_steps, manage_connector, external_history, output_schema)
+
         success = True
         start_time = time.time()
 
@@ -938,6 +970,11 @@ class MCPAgent:
 
     async def close(self) -> None:
         """Close the MCP connection with improved error handling."""
+        # Delegate to remote agent if in remote mode
+        if self._is_remote and self._remote_agent:
+            await self._remote_agent.close()
+            return
+
         logger.info("🔌 Closing agent and cleaning up resources...")
         try:
             # Clean up the agent first
