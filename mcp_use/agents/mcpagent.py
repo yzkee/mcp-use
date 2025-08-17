@@ -31,6 +31,9 @@ from mcp_use.telemetry.utils import extract_model_info
 from ..adapters.langchain_adapter import LangChainAdapter
 from ..logging import logger
 from ..managers.server_manager import ServerManager
+
+# Import observability manager
+from ..observability import ObservabilityManager
 from .prompts.system_prompt_builder import create_system_message
 from .prompts.templates import DEFAULT_SYSTEM_PROMPT_TEMPLATE, SERVER_MANAGER_SYSTEM_PROMPT_TEMPLATE
 from .remote import RemoteAgent
@@ -66,6 +69,7 @@ class MCPAgent:
         agent_id: str | None = None,
         api_key: str | None = None,
         base_url: str = "https://cloud.mcp-use.com",
+        callbacks: list | None = None,
         chat_id: str | None = None,
         retry_on_error: bool = True,
         max_retries_per_step: int = 2,
@@ -87,6 +91,7 @@ class MCPAgent:
             agent_id: Remote agent ID for remote execution. If provided, creates a remote agent.
             api_key: API key for remote execution. If None, checks MCP_USE_API_KEY env var.
             base_url: Base URL for remote API calls.
+            callbacks: List of LangChain callbacks to use. If None and Langfuse is configured, uses langfuse_handler.
             retry_on_error: Whether to retry tool calls that fail due to validation errors.
             max_retries_per_step: Maximum number of retries for validation errors per step.
         """
@@ -122,6 +127,10 @@ class MCPAgent:
         # User can provide a template override, otherwise use the imported default
         self.system_prompt_template_override = system_prompt_template
         self.additional_instructions = additional_instructions
+
+        # Set up observability callbacks using the ObservabilityManager
+        self.observability_manager = ObservabilityManager(custom_callbacks=callbacks)
+        self.callbacks = self.observability_manager.get_callbacks()
 
         # Either client or connector must be provided
         if not client and len(self.connectors) == 0:
@@ -253,9 +262,15 @@ class MCPAgent:
         # Use the standard create_tool_calling_agent
         agent = create_tool_calling_agent(llm=self.llm, tools=self._tools, prompt=prompt)
 
-        # Use the standard AgentExecutor
-        executor = AgentExecutor(agent=agent, tools=self._tools, max_iterations=self.max_steps, verbose=self.verbose)
-        logger.debug(f"Created agent executor with max_iterations={self.max_steps}")
+        # Use the standard AgentExecutor with callbacks
+        executor = AgentExecutor(
+            agent=agent,
+            tools=self._tools,
+            max_iterations=self.max_steps,
+            verbose=self.verbose,
+            callbacks=self.callbacks,
+        )
+        logger.debug(f"Created agent executor with max_iterations={self.max_steps} and {len(self.callbacks)} callbacks")
         return executor
 
     def get_conversation_history(self) -> list[BaseMessage]:
@@ -476,6 +491,22 @@ class MCPAgent:
 
             logger.info(f"🏁 Starting agent execution with max_steps={steps}")
 
+            # Create a run manager with our callbacks if we have any - ONCE for the entire execution
+            run_manager = None
+            if self.callbacks:
+                # Create an async callback manager with our callbacks
+                from langchain_core.callbacks.manager import AsyncCallbackManager
+
+                callback_manager = AsyncCallbackManager.configure(
+                    inheritable_callbacks=self.callbacks,
+                    local_callbacks=self.callbacks,
+                )
+                # Create a run manager for this chain execution
+                run_manager = await callback_manager.on_chain_start(
+                    {"name": "MCPAgent (mcp-use)"},
+                    inputs,
+                )
+
             for step_num in range(steps):
                 steps_taken = step_num + 1
                 # --- Check for tool updates if using server manager ---
@@ -517,7 +548,7 @@ class MCPAgent:
                                 color_mapping=color_mapping,
                                 inputs=inputs,
                                 intermediate_steps=intermediate_steps,
-                                run_manager=None,
+                                run_manager=run_manager,
                             )
 
                             # If we get here, the step succeeded, break out of retry loop
@@ -547,6 +578,9 @@ class MCPAgent:
                     if isinstance(next_step_output, AgentFinish):
                         logger.info(f"✅ Agent finished at step {step_num + 1}")
                         result = next_step_output.return_values.get("output", "No output generated")
+                        # End the chain if we have a run manager
+                        if run_manager:
+                            await run_manager.on_chain_end({"output": result})
 
                         # If structured output is requested, attempt to create it
                         if output_schema and structured_llm:
@@ -624,12 +658,17 @@ class MCPAgent:
                 except OutputParserException as e:
                     logger.error(f"❌ Output parsing error during step {step_num + 1}: {e}")
                     result = f"Agent stopped due to a parsing error: {str(e)}"
+                    if run_manager:
+                        await run_manager.on_chain_error(e)
                     break
                 except Exception as e:
                     logger.error(f"❌ Error during agent execution step {step_num + 1}: {e}")
                     import traceback
 
                     traceback.print_exc()
+                    # End the chain with error if we have a run manager
+                    if run_manager:
+                        await run_manager.on_chain_error(e)
                     result = f"Agent stopped due to an error: {str(e)}"
                     break
 
@@ -637,6 +676,8 @@ class MCPAgent:
             if not result:
                 logger.warning(f"⚠️ Agent stopped after reaching max iterations ({steps})")
                 result = f"Agent stopped after reaching the maximum number of steps ({steps})."
+                if run_manager:
+                    await run_manager.on_chain_end({"output": result})
 
             # If structured output was requested but not achieved, attempt one final time
             if output_schema and structured_llm and not success:
