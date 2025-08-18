@@ -30,6 +30,7 @@ from mcp_use.telemetry.utils import extract_model_info
 
 from ..adapters.langchain_adapter import LangChainAdapter
 from ..logging import logger
+from ..managers.base import BaseServerManager
 from ..managers.server_manager import ServerManager
 
 # Import observability manager
@@ -65,6 +66,7 @@ class MCPAgent:
         disallowed_tools: list[str] | None = None,
         tools_used_names: list[str] | None = None,
         use_server_manager: bool = False,
+        server_manager: BaseServerManager | None = None,
         verbose: bool = False,
         agent_id: str | None = None,
         api_key: str | None = None,
@@ -119,6 +121,7 @@ class MCPAgent:
         self.disallowed_tools = disallowed_tools or []
         self.tools_used_names = tools_used_names or []
         self.use_server_manager = use_server_manager
+        self.server_manager = server_manager
         self.verbose = verbose
         self.retry_on_error = retry_on_error
         self.max_retries_per_step = max_retries_per_step
@@ -142,9 +145,7 @@ class MCPAgent:
         # Initialize telemetry
         self.telemetry = Telemetry()
 
-        # Initialize server manager if requested
-        self.server_manager = None
-        if self.use_server_manager:
+        if self.use_server_manager and self.server_manager is None:
             if not self.client:
                 raise ValueError("Client must be provided when using server manager")
             self.server_manager = ServerManager(self.client, self.adapter)
