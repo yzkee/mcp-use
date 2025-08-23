@@ -7,12 +7,6 @@
   </picture>
 </div>
 
-<div align="center">
-  <h2>🎉 <strong>We're LIVE on Product Hunt!</strong> 🎉</h2>
-  <p><strong>Support us today and help us reach #1!</strong></p>
-  <a href="https://www.producthunt.com/products/mcp-use?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-mcp&#0045;use" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1002629&theme=neutral&t=1754609432704" alt="mcp&#0045;use - Open&#0032;source&#0032;SDK&#0032;and&#0032;infra&#0032;for&#0032;MCP&#0032;servers&#0032;&#0038;&#0032;agents | Product Hunt" style="width: 220px; height: 54px;" width="250" height="54" /></a>
-  <p>👆 <em>Click to upvote and leave a comment!</em></p>
-</div>
 
 <h1 align="center">🚀 Create MCP Clients and Agents</h1>
 <p align="center">
