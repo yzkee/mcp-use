@@ -284,14 +284,25 @@ class MCPAgent:
         if self._system_message:
             system_content = self._system_message.content
 
-        prompt = ChatPromptTemplate.from_messages(
-            [
-                ("system", system_content),
-                MessagesPlaceholder(variable_name="chat_history"),
-                ("human", "{input}"),
-                MessagesPlaceholder(variable_name="agent_scratchpad"),
-            ]
-        )
+        if self.memory_enabled:
+            # Query already in chat_history — don't re-inject it
+            prompt = ChatPromptTemplate.from_messages(
+                [
+                    ("system", system_content),
+                    MessagesPlaceholder(variable_name="chat_history"),
+                    ("human", "{input}"),
+                    MessagesPlaceholder(variable_name="agent_scratchpad"),
+                ]
+            )
+        else:
+            # No memory — inject input directly
+            prompt = ChatPromptTemplate.from_messages(
+                [
+                    ("system", system_content),
+                    ("human", "{input}"),
+                    MessagesPlaceholder(variable_name="agent_scratchpad"),
+                ]
+            )
 
         tool_names = [tool.name for tool in self._tools]
         logger.info(f"🧠 Agent ready with tools: {', '.join(tool_names)}")
@@ -502,10 +513,6 @@ class MCPAgent:
 
             display_query = query[:50].replace("\n", " ") + "..." if len(query) > 50 else query.replace("\n", " ")
             logger.info(f"💬 Received query: '{display_query}'")
-
-            # Add the user query to conversation history if memory is enabled
-            if self.memory_enabled:
-                self.add_to_history(HumanMessage(content=query))
 
             # Use the provided history or the internal history
             history_to_use = external_history if external_history is not None else self._conversation_history
@@ -756,6 +763,9 @@ class MCPAgent:
                 except Exception as e:
                     logger.error(f"❌ Final structured output attempt failed: {e}")
                     raise RuntimeError(f"Failed to generate structured output after {steps} steps: {str(e)}") from e
+
+            if self.memory_enabled:
+                self.add_to_history(HumanMessage(content=query))
 
             if self.memory_enabled and not output_schema:
                 self.add_to_history(AIMessage(content=self._normalize_output(result)))
